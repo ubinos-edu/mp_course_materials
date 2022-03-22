@@ -5,7 +5,7 @@
 #
 
 CONFIG_DIR ?= ../app
-CONFIG_NAME ?= ex01_stm32vldisco_baremetal_qemu
+CONFIG_NAME ?= mp_course_ex0401_stm32vldisco_baremetal_qemu
 
 include makefile.mk
 

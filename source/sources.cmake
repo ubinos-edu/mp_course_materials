@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-if(INCLUDE__MICROPROCESSOR_COURSE_EXAMPLES)
+if(INCLUDE__MP_COURSE_EXAMPLES)
 
     get_filename_component(_tmpdir "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
 
@@ -12,10 +12,9 @@ if(INCLUDE__MICROPROCESSOR_COURSE_EXAMPLES)
         "${_tmpdir}/*.c"
         "${_tmpdir}/*.cc"
         "${_tmpdir}/*.cpp"
-        "${_tmpdir}/*.S"
-        "${_tmpdir}/*.s")
+        "${_tmpdir}/*.S")
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmpsrc})
 
-endif(INCLUDE__MICROPROCESSOR_COURSE_EXAMPLES)
+endif(INCLUDE__MP_COURSE_EXAMPLES)
 
