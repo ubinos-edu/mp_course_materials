@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# ubinos_config_info {"name_base": "mp_course_ex0602_accessing_psr_1", "build_type": "cmake_ubinos", "app": true}
+# ubinos_config_info {"name_base": "mp_course_ex0602_accessing_psr", "build_type": "cmake_ubinos", "app": true}
 
 set_cache(UBINOS__BSP__USE_QEMU TRUE  BOOL)
 

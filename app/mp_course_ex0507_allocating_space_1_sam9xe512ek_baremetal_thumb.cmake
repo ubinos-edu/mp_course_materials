@@ -4,14 +4,16 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-# ubinos_config_info {"name_base": "mp_course_ex0602_accessing_psr", "build_type": "cmake_ubinos", "app": true}
+# ubinos_config_info {"name_base": "mp_course_ex0507_allocating_space_1", "build_type": "cmake_ubinos", "app": true}
 
-include(${PROJECT_UBINOS_DIR}/config/ubinos_nrf52840dk_baremetal.cmake)
+set_cache(UBINOS__BSP__CPU_ARMTHUMBSTATE "THUMB" STRING)
+
+include(${PROJECT_UBINOS_DIR}/config/ubinos_sam9xe512ek_baremetal.cmake)
 
 ####
 
 set(INCLUDE__APP TRUE)
-set(APP__NAME "mp_course_ex0602_accessing_psr")
+set(APP__NAME "mp_course_ex0507_allocating_space_1")
 
 get_filename_component(_tmp_source_dir "${CMAKE_CURRENT_LIST_DIR}/${APP__NAME}" ABSOLUTE)
 

@@ -19,15 +19,29 @@
     .type   appmain, %function
 appmain:
     @@@@
-    mov     r1, #1
-    mov     r2, #1
-    subs    r0, r1, r2  @ 1 - 1 = 0 (N=0, Z=1, C=1, V=0)
     mov     r0, #0
-    mrs     r0, psr
+    mrs     r0, control
+    msr     control, r0
+
+    mrs     r0, control
+    orr     r0, #0x2 
+    msr     control, r0
+
+    add     sp, #0x20
+
+    mrs     r0, control
+    and     r0, #0xfffffffd 
+    msr     control, r0
+
+    mrs     r0, control
+    orr     r0, #0x2 
+    msr     control, r0
+
     mov     r0, #0
-    mrs     r0, apsr
+    mrs     r0, msp
+
     mov     r0, #0
-    mrs     r0, ipsr
+    mrs     r0, psp
 
     bx      lr
 
