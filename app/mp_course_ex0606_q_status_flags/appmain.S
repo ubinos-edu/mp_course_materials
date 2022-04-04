@@ -10,19 +10,6 @@
     .arch   armv7-m
 
 
-    .data
-    .align 2
-    
-int_data6:
-    .word   0x00020000
-int_data7:
-    .word   0x00007fff
-int_data8:
-    .word   0xffff8000      @ - 0x 0000 8000
-int_data9:
-    .word   0xfffe0000      @ - 0x 0002 0000
-
-
     .text
     .thumb
 
@@ -32,30 +19,64 @@ int_data9:
     .type   appmain, %function
 appmain:
     @@@@
-    @ Sticky saturation flag: 32767 (0x 0000 7fff) to -32768 (0x ffff 8000)
+    @ saturation for signed value: 32767 (0x 0000 7fff) to -32768 (0x ffff 8000)
     mov     r0, #0
     msr     apsr, r0
-    ldr     r3, =int_data6 @ 0x 0002 0000
-    ldr     r1, [r3, #0]
-    ssat    r0, #16, r1
+    ldr     r1, =0x00020000 @ 131072
+    ssat    r0, #16, r1     @ V = 1, r0 = 0x 0000 7fff (32767)
 
     mov     r0, #0
     msr     apsr, r0
-    ldr     r3, =int_data7 @ 0x 0000 7fff
-    ldr     r1, [r3, #0]
-    ssat    r0, #16, r1
+    ldr     r1, =0x00008000 @ 32768
+    ssat    r0, #16, r1     @ V = 1, r0 = 0x 0000 7fff (32767)
 
     mov     r0, #0
     msr     apsr, r0
-    ldr     r3, =int_data8 @ - 0x 0000 8000 (0x ffff 8000)
-    ldr     r1, [r3, #0]
-    ssat    r0, #16, r1
+    ldr     r1, =0x00007fff @ 32767
+    ssat    r0, #16, r1     @ V = 0, r0 = 0x 0000 7fff (32767)
 
     mov     r0, #0
     msr     apsr, r0
-    ldr     r3, =int_data9 @ - 0x 0002 0000 (0x fffe 0000)
-    ldr     r1, [r3, #0]
-    ssat    r0, #16, r1
+    ldr     r1, =0xffff8000 @ -32768
+    ssat    r0, #16, r1     @ V = 0, r0 = 0x ffff 8000 (-32768)
 
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0xffff7fff @ -32769
+    ssat    r0, #16, r1     @ V = 1, r0 = 0x ffff 8000 (-32768)
+
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0xfffe0000 @ -131072
+    ssat    r0, #16, r1     @ V = 1, r0 = 0x ffff 8000 (-32768)
+
+    @@@@
+    @ saturation for unsigned value: 65535 (0x 0000 ffff) to 0 (0x 0000 0000)
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0x00020000 @ 131072
+    usat    r0, #16, r1     @ V = 1, r0 = 0x 0000 ffff (65535)
+
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0x0000ffff @ 65535
+    usat    r0, #16, r1     @ V = 0, r0 = 0x 0000 ffff (65535)
+
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0x00000000 @ 0
+    usat    r0, #16, r1     @ V = 0, r0 = 0x 0000 0000 (0)
+
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0xffffffff @ -1
+    usat    r0, #16, r1     @ V = 1, r0 = 0x 0000 0000 (0)
+
+    mov     r0, #0
+    msr     apsr, r0
+    ldr     r1, =0xfffe0000 @ -131072
+    usat    r0, #16, r1     @ V = 1, r0 = 0x 0000 0000 (0)
+
+    @@@@
     bx      lr
 
