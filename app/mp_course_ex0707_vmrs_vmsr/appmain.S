@@ -20,16 +20,19 @@
 appmain:
     @@@@
     mov     r0, #0
-    vmov.f32 s0, #2.25000000
+    mov     r3, #0
+    vmov.f32 s0, #1.00000000
+    vmov.f32 s1, #2.25000000
+    vcmp.f32 s0, s1
 
-    @ Copy value from s0 to r0
-    vmov    r0, s0
+    @ Copy value in FPSCR to R0
+    vmrs    r0, FPSCR
 
-    @ Move single-precision value into floating point register S0
-    vmov.f32 s0, #1.0
+    @ Copy flags from FPSCR to the flags in APSR
+    vmrs    APSR_nzcv, FPSCR
 
-    @ Copy value from r0 to s0
-    vmov    s0, r0
+    @ Copy R3 to FPSCR, a floating point unit system register
+    vmsr    FPSCR, r3
 
     @@@@
     bx      lr
