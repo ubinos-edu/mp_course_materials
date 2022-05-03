@@ -24,7 +24,8 @@ int_array:
     .globl  appmain
     .type   appmain, %function
 appmain:
-    @@@@
+    @@@@@@@@
+    @ Register Offset (pre-index)
     ldr    r0, =int_array
     mov    r1, #4
     mov    r2, #0
@@ -35,7 +36,8 @@ appmain:
     ldr    r2, [r0, r1]
     ldr    r3, [r0, r1, lsl #1]
 
-    @@@@
+    @@@@@@@@
+    @ Post-Indexing
     mov    r2, #0
     mov    r3, #0
 
@@ -44,6 +46,6 @@ appmain:
     ldr    r3, [r0], #4
     ldr    r4, [r0], #4
 
-    @@@@
-    bx      lr          @ 16 bit 
+    @@@@@@@@
+    bx     lr
 

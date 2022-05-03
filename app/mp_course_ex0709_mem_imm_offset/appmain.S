@@ -28,20 +28,22 @@ int_array:
     .globl  appmain
     .type   appmain, %function
 appmain:
-    @@@@
+    @@@@@@@@
+    @ Immediate Offset (pre-index)
     ldr     r0, =byte_array
     mov     r1, #0
     mov     r2, #0
     mov     r3, #0
 
-    @@@@
+    @@@@ 
     ldrb    r1, [r0, #0x3] @ Read a byte value from address r0 + 0x3, and store the read data in R0.
 
     @@@@
     ldrb    r2, [r0, #0x5] 
     ldrsb   r3, [r0, #0x5] 
 
-    @@@@
+    @@@@@@@@
+    @ Immediate Offset and Write Back
     ldr     r0, =int_array
     mov     r1, #0
     mov     r2, #0
@@ -51,7 +53,8 @@ appmain:
     ldr    r1, [r0, #0x8]! @ After the access to memory[01+0x8], r0 is updated to R0+0x8
     ldr    r2, [r0]
 
-    @@@@
+    @@@@@@@@
+    @ PC Related Addressing (Literal)
     mov     r0, #0
     mov     r1, #0
     mov     r2, #0
@@ -60,7 +63,7 @@ appmain:
     @@@@
     ldr     r0, [pc, 4]
 
-    @@@@
+    @@@@@@@@
     bx      lr          @ 16 bit 
 
     .align 2
