@@ -14,14 +14,15 @@
 
 int appmain(int argc, char * argv[])
 {
-    printf("SCnSCB      = 0x%08x\n", (unsigned int) SCnSCB);
-    printf("SCB         = 0x%08x\n", (unsigned int) SCB);
-    printf("SysTick     = 0x%08x\n", (unsigned int) SysTick);
-    printf("NVIC        = 0x%08x\n", (unsigned int) NVIC);
-    printf("ITM         = 0x%08x\n", (unsigned int) ITM);
-    printf("DWT         = 0x%08x\n", (unsigned int) DWT);
-    printf("TPI         = 0x%08x\n", (unsigned int) TPI);
-    printf("CoreDebug   = 0x%08x\n", (unsigned int) CoreDebug);
+    printf("SCnSCB                      = 0x%08x\n", (unsigned int) SCnSCB);
+    printf("SCB                         = 0x%08x\n", (unsigned int) SCB);
+    printf("    SCB->CCR                = 0x%08x\n", (unsigned int) &(SCB->CCR));
+    printf("SysTick                     = 0x%08x\n", (unsigned int) SysTick);
+    printf("NVIC                        = 0x%08x\n", (unsigned int) NVIC);
+    printf("ITM                         = 0x%08x\n", (unsigned int) ITM);
+    printf("DWT                         = 0x%08x\n", (unsigned int) DWT);
+    printf("TPI                         = 0x%08x\n", (unsigned int) TPI);
+    printf("CoreDebug                   = 0x%08x\n", (unsigned int) CoreDebug);
 
     return 0;
 }
