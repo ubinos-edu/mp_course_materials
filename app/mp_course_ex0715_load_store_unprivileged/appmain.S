@@ -43,4 +43,4 @@ appmain:
     ldrt    r3, [r1] @ Read chip ID
 
     @@@@@@@@
-    bx      lr          @ 16 bit 
+    bx      lr

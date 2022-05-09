@@ -77,7 +77,7 @@ try3:
     bne     try3            @ no, try again
 
     @@@@@@@@
-    bx      lr          @ 16 bit 
+    bx      lr
 
 
     .thumb_func

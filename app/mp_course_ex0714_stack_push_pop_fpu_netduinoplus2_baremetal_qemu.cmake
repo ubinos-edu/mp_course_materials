@@ -27,4 +27,3 @@ set(PROJECT_APP_SOURCES ${PROJECT_APP_SOURCES} ${_tmp_sources})
 
 add_compile_options(-Wno-error=unused-variable -Wno-error=unused-function -Wno-error=unused-const-variable -Wno-error=unused-but-set-variable)
 
- 
