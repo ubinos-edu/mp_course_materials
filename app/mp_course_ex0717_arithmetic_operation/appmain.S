@@ -91,5 +91,83 @@ appmain:
     sbc     r6, r2, r4              @ r6:r5 0x1fffffff f0000000
 
     @@@@@@@@
-    bx      lr          @ 16 bit 
+    mov     r0, #0
+    mov     r1, #6
+    mov     r2, #2
+    mov     r3, #-2
+    mov     r4, #0
 
+    @@@@
+    mul     r0, r1, r2
+    udiv    r0, r1, r2
+    udiv    r0, r1, r3
+    sdiv    r0, r1, r3
+
+    @@@@
+    udiv    r0, r1, r4
+
+    ldr     r7, =0xe000ed14 @ SCB->CCR
+    ldr     r6, [r7]
+    orr     r6, 0x10 @ DIV_0_TRP bit[4]
+    str     r6, [r7]
+
+    ldr     r7, =0xe000ed24 @ SCB->SHCSR
+    ldr     r6, [r7]
+    orr     r6, 0x40000 @ USGFAULTENA bit[18]
+    str     r6, [r7]
+
+    udiv    r0, r1, r4
+
+    @@@@@@@@
+    mov     r0, #0
+    mov     r1, #1
+    mov     r2, #2
+    mov     r3, #3
+
+    mla     r0, r1, r2, r3 @ r0 = r3 + r1 * r2
+    mls     r0, r1, r2, r3 @ r0 = r3 - r1 * r2
+
+    @@@@@@@@
+    mov     r0, #0
+    mov     r1, #1
+    mov     r2, #2
+    ldr     r3, =#0x12345678
+    mov     r4, #0x10
+
+    @@@@
+    umull   r1, r2, r3, r4 @ r2:r1 = r3 * r4
+
+    @@@@@@@@
+    mov     r1, #1
+    mov     r2, #2
+ 
+    umlal   r1, r2, r3, r4 @ r2:r1 = r2:r1 + r3 * r4
+
+    @@@@@@@@
+    mov     r1, #0xfffffffe @ r2:r1 = -2
+    mov     r2, #0xffffffff
+    mov     r3, #-2
+    mov     r4, #0x10
+
+    @@@@
+    smull r1, r2, r3, r4 @ r2:r1 = -2 * 16 = -32
+    umull r1, r2, r3, r4
+
+    @@@@@@@@
+    mov     r1, #0xfffffffe @ r2:r1 = -2
+    mov     r2, #0xffffffff
+ 
+    smlal   r1, r2, r3, r4 @  r2:r1 = r2:r1 + -2 * 16 = -34
+
+    @@@@@@@@
+    bx      lr
+
+    .thumb_func
+    .align 1
+    .globl UsageFault_Handler
+    .type UsageFault_Handler, %function
+UsageFault_Handler:
+    ldr     r1, [sp, #24]
+    add     r1, #4
+    str     r1, [sp, #24]
+    bx      lr
