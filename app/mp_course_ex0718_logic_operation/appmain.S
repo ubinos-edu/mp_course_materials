@@ -127,6 +127,28 @@ appmain:
     @@@@
     eor     r0, r1, r2 @ r0 = r1 ^ r2
 
+    @@@@@@@@
+    mov     r1, #0x81000000
+    mov     r2, #0x80000000
+    mov     r3, #0x00000000
+    mov     r0, #0
+    msr     apsr_nzcvq, r0
+    ands    r0, r1, r2              @ (C = 0)
+    ands    r0, r1, r3              @ (C = 0)
+    ands    r0, r1, #0x80000000     @ (C = 1?)
+    ands    r0, r1, #0x00000000     @ (C = 1?)
+    mov     r0, #0
+    msr     apsr_nzcvq, r0
+    orrs    r0, r1, r2              @ (C = 0)
+    orrs    r0, r1, r3              @ (C = 0)
+    orrs    r0, r1, #0x80000000     @ (C = 1?)
+    orrs    r0, r1, #0x00000000     @ (C = 1?)
+    mov     r0, #0
+    msr     apsr_nzcvq, r0
+    eors    r0, r1, r2              @ (C = 0)
+    eors    r0, r1, r3              @ (C = 0)
+    eors    r0, r1, #0x80000000     @ (C = 1?)
+    eors    r0, r1, #0x00000000     @ (C = 1?)
 
     @@@@@@@@
     bx      lr
