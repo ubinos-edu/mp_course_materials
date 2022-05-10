@@ -9,12 +9,6 @@
     .syntax unified
     .arch   armv7e-m
 
-    .data
-
-    .align 2
-lock_addr_1:
-    .word   0x0
-
 
     .text
     .thumb
