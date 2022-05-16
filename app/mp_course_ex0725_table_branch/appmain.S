@@ -23,15 +23,15 @@ appmain:
     mov     r0, #0
 
 tbb_start:
-    tbb     [pc, r0]        @ 32-bit
+    tbb     [pc, r0]        @ 32-bit (pc + 4)
 tbb_table:
-    .byte   2
-    .byte   5
+    .byte   2               @ + (2 * 2) bytes
+    .byte   5               @ + (5 * 2) bytes
     .byte   8
     .byte   11
 tbb_dest0:
-    mov     r0, #1          @ 32-bit
-    b       tbb_start       @ 16-bit
+    mov     r0, #1          @ 4 bytes
+    b       tbb_start       @ 2 bytes
 tbb_dest1:
     mov     r0, #2
     b       tbb_start
@@ -47,15 +47,15 @@ tbb_end:
     mov     r0, #0
 
 tbh_start:
-    tbh     [pc, r0, lsl #1]    @ 32-bit
+    tbh     [pc, r0, lsl #1]    @ 32-bit (pc + 4)
 tbh_table:
-    .hword  4
-    .hword  7
+    .hword  4                   @ + (4 * 2) bytes
+    .hword  7                   @ + (7 * 2) bytes
     .hword  10
     .hword  13
 tbh_dest0:
-    mov     r0, #1              @ 32-bit
-    b       tbh_start           @ 16-bit
+    mov     r0, #1              @ 4 bytes
+    b       tbh_start           @ 2 bytes
 tbh_dest1:
     mov     r0, #2
     b       tbh_start
