@@ -24,6 +24,9 @@ int appmain(int argc, char * argv[])
     printf("TPI                         = 0x%08x\n", (unsigned int) TPI);
     printf("CoreDebug                   = 0x%08x\n", (unsigned int) CoreDebug);
 
+    // printf("SYSCFG                      = 0x%08x\n", (unsigned int) SYSCFG);
+    // printf("    SYSCFG->MEMRMP          = 0x%08x\n", (unsigned int) &(SYSCFG->MEMRMP));
+
     return 0;
 }
 
