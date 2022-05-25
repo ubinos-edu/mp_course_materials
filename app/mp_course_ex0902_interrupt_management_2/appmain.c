@@ -28,10 +28,10 @@ int appmain(int argc, char * argv[])
     uint32_t SystemCoreClock = clockfreqk;
     uint32_t TimOutClock;
     uint32_t InitialAutoreload;
-    uint32_t PriorityGroup = 0;
-    uint32_t PreemptPriority;
-    uint32_t Subpriority;
-    uint32_t EncodedPriority;
+    uint32_t PriorityGroup = 4;
+    uint32_t PreemptPriority = 6;
+    uint32_t Subpriority = 1;
+    uint32_t EncodedPriority = 0;
 
     /* Enable the timer peripheral clock */
     LL_APB1_GRP1_EnableClock(LL_APB1_GRP1_PERIPH_TIM2); 
@@ -61,7 +61,8 @@ int appmain(int argc, char * argv[])
     
     /* Configure the NVIC to handle TIM2 update interrupt */
     NVIC_SetPriorityGrouping(PriorityGroup);
-    NVIC_SetPriority(TIM2_IRQn, 0);
+    EncodedPriority = NVIC_EncodePriority(PriorityGroup, PreemptPriority, Subpriority);
+    NVIC_SetPriority(TIM2_IRQn, EncodedPriority);
     NVIC_EnableIRQ(TIM2_IRQn);
     
     /* Enable counter */
@@ -71,15 +72,14 @@ int appmain(int argc, char * argv[])
     LL_TIM_GenerateEvent_UPDATE(TIM2);
 
     //
-    PriorityGroup = NVIC_GetPriorityGrouping();\
-    PriorityGroup = 4;
-    PreemptPriority = 6;
-    Subpriority = 1;
-    EncodedPriority = NVIC_EncodePriority(PriorityGroup, PreemptPriority, Subpriority);
+    PriorityGroup = 0;
+    EncodedPriority = 0;
     PreemptPriority = 0;
     Subpriority = 0;
-    NVIC_DecodePriority (EncodedPriority, PriorityGroup, &PreemptPriority, &Subpriority);
-    //
+
+    PriorityGroup = NVIC_GetPriorityGrouping();
+    EncodedPriority = NVIC_GetPriority(TIM2_IRQn);
+    NVIC_DecodePriority(EncodedPriority, PriorityGroup, &PreemptPriority, &Subpriority);
 
     __enable_irq();
 
