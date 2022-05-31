@@ -12,12 +12,16 @@
     .data
 
     .align 2
-byte_array:
-    .byte   1, 2, 3, 4, -1, -2
+byte_array:                     @ VSCode watch expression: ((char[8]) byte_array),h
+    .byte   1, 2, 3, 4, -1, -2, -3, -4
+byte_array_2:                   @ VSCode watch expression: ((char[8]) byte_array_2),h
+    .byte   0, 0, 0, 0,  0,  0,  0,  0
 
     .align 2
-int_array:
+int_array:                      @ VSCode watch expression: ((int[8]) int_array),h
     .word   0, 1, 2, 3, 4, 5, 6, 7
+int_array_2:                    @ VSCode watch expression: ((int[8]) int_array_2),h
+    .word   0, 0, 0, 0, 0, 0, 0, 0
 
 
     .text
@@ -30,28 +34,53 @@ int_array:
 appmain:
     @@@@@@@@
     @ Immediate Offset (pre-index)
-    ldr     r0, =byte_array
+    mov     r0, #0
     mov     r1, #0
     mov     r2, #0
     mov     r3, #0
-
-    @@@@ 
-    ldrb    r1, [r0, #0x3] @ Read a byte value from address r0 + 0x3, and store the read data in R0.
+    mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    mov     r7, #0
 
     @@@@
-    ldrb    r2, [r0, #0x5] 
-    ldrsb   r3, [r0, #0x5] 
+    ldr     r7, =byte_array
+
+    ldrb    r0, [r7, #0x3]      @ Read a byte value from memory[r7 + 0x3], and store the value in r0.
+
+    @@@@
+    ldr     r7, =byte_array_2
+
+    strb    r0, [r7, #0x3]      @ Write a byte value in r0 to memory[r7 + 0x3].
+
+    @@@@
+    ldr     r7, =byte_array
+
+    ldrb    r0, [r7, #0x5] 
+    ldrsb   r1, [r7, #0x5] 
 
     @@@@@@@@
     @ Immediate Offset and Write Back
-    ldr     r0, =int_array
+    mov     r0, #0
     mov     r1, #0
     mov     r2, #0
     mov     r3, #0
+    mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    mov     r7, #0
 
     @@@@
-    ldr    r1, [r0, #0x8]! @ After the access to memory[01+0x8], r0 is updated to R0+0x8
-    ldr    r2, [r0]
+    ldr     r7, =int_array
+
+    ldr     r0, [r7, #0x8]!     @ After the access to memory[r7 + 0x8], r7 is updated to r7 + 0x8
+    ldr     r1, [r7, #0x8]!     @ After the access to memory[r7 + 0x8], r7 is updated to r7 + 0x8
+
+    @@@@
+    ldr     r7, =int_array_2
+
+    str     r0, [r7, #0x8]!     @ After the access to memory[r7 + 0x8], r7 is updated to r7 + 0x8
+    str     r1, [r7, #0x8]!     @ After the access to memory[r7 + 0x8], r7 is updated to r7 + 0x8
 
     @@@@@@@@
     @ PC Related Addressing (Literal)
@@ -60,6 +89,9 @@ appmain:
     mov     r2, #0
     mov     r3, #0
     mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    mov     r7, #0
 
     @@@@
     ldr     r0, [pc, #12]
@@ -104,4 +136,3 @@ appmain:
 @ 800029e:  0007
 @ 80002a0:  0008    .word	0x00090008
 @ 8000292:  0009
-

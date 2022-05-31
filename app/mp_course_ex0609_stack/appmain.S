@@ -17,6 +17,8 @@
     .globl  appmain
     .type   appmain, %function
 appmain:
+    @ VSCode watch expression for stack : (int[8]) (* ((int *) $sp)),h
+
     movs    r0, #0
  
     mov     r1, #1

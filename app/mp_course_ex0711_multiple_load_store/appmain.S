@@ -12,9 +12,9 @@
     .data
 
     .align 2
-int_array:                      @ (int[8]) int_array
+int_array:                      @ VSCode watch expression: ((int[8]) int_array),h
     .word   1, 2, 3, 4, 5, 6, 7, 8
-int_array_2:                    @ (int[8]) int_array_2
+int_array_2:                    @ VSCode watch expression: ((int[8]) int_array_2),h
     .word   0, 0, 0, 0, 0, 0, 0, 0
 
 
@@ -33,14 +33,19 @@ appmain:
     mov     r2, #0
     mov     r3, #0
     mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    mov     r7, #0
 
     @@@@
-    ldr     r4, =int_array      @ Set R4 to int_array (address)
-    ldmia   r4, {r0-r3}         @ Read 4 words and store them to R0 - R3
+    ldr     r7, =int_array      @ Set r7 to int_array (address)
+
+    ldmia   r7, {r0-r3}         @ Read 4 words and store them to r0 - r3
 
     @@@@
-    ldr     r4, =int_array_2    @ Set R4 to int_array_2 (address)
-    stmia   r4, {r0-r3}         @ Write 4 words stored in R0 - R3 to memory location specified by R4
+    ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
+    
+    stmia   r7, {r0-r3}         @ Write 4 words stored in r0 - r3 to memory location specified by r7
 
     @@@@@@@@
     @ Multiple Load/Store with Write Back
@@ -49,16 +54,21 @@ appmain:
     mov     r2, #0
     mov     r3, #0
     mov     r4, #0
-    ldr     r4, =int_array_2
-    stmia   r4, {r0-r3}
+    mov     r5, #0
+    mov     r6, #0
+    ldr     r7, =int_array_2
+    stmia   r7, {r0-r3}
+    mov     r7, #0
     
     @@@@
-    ldr     r4, =int_array      @ Set R4 to int_array (address)
-    ldmia   r4!, {r0-r3}        @ R4 change to int_array (address) + 0x10 after the load
+    ldr     r7, =int_array      @ Set r7 to int_array (address)
+
+    ldmia   r7!, {r0-r3}        @ Change r7 to int_array (address) + 0x10 after the load
 
     @@@@
-    ldr     r4, =int_array_2    @ Set R4 to int_array_2 (address)
-    stmia   r4!, {r0-r3}        @ R4 change to int_array_2 (address) + 0x10 after the store
+    ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
+    
+    stmia   r7!, {r0-r3}        @ Change r7 to int_array_2 (address) + 0x10 after the store
 
     @@@@@@@@
     @ Multiple Load/Store Decrement Address before
@@ -67,12 +77,23 @@ appmain:
     mov     r2, #0
     mov     r3, #0
     mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    ldr     r7, =int_array_2
+    stmia   r7, {r0-r3}
+    mov     r7, #0
 
     @@@@
-    ldr     r4, =int_array      @ Set R4 to int_array (address)
-    add     r4, r4, #16
-    ldmdb   r4, {r0-r3}         @ Read 4 words and store them to R0 - R3
+    ldr     r7, =int_array      @ Set r7 to int_array (address)
+    add     r7, r7, #16
+
+    ldmdb   r7, {r0-r3}         @ Read 4 words and store them to r0 - r3
+
+    @@@@
+    ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
+    add     r7, r7, #16
+
+    stmdb   r7, {r0-r3}         @ Write 4 words stored in r0 - r3 to memory location specified by r7
 
     @@@@@@@@
     bx     lr
-
