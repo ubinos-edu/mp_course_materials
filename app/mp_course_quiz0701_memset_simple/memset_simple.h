@@ -22,7 +22,7 @@ extern "C"
  * 
  * @param   value       채울 값<br>
  * 
- * @param   value       채울 메모리 영역 크기 (바이트 단위)<br>
+ * @param   size        채울 메모리 영역 크기 (바이트 단위)<br>
  *          <br>
  *
  * @return  buffer<br>

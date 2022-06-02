@@ -17,7 +17,8 @@
     .globl  memset_simple
     .type   memset_simple, %function
 memset_simple:
-
     /* memset_simple.h 에서 정의된 함수, memset_simple 를 구현하라. */
+    // r0: void * buffer, r1: int value, r2: size_t size
 
+    // r0: return value
     bx lr
