@@ -55,4 +55,7 @@ SVC_Handler:
     mov     r3,  #0x2003
     mov     r12, #0x2012
 
+    push    {r0}
+    pop     {r0}
+
     bx      lr

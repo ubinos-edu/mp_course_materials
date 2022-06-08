@@ -9,12 +9,6 @@
     .syntax unified
     .arch   armv7e-m
 
-    .data
-
-    .align 2
-process_stack:
-    .space   256, 0xe
-
     .text
     .thumb
 
@@ -28,16 +22,11 @@ appmain:
     mov     r1, #0x22222222
     push    {r0, r1}
 
-    @@@@@@@@
     mrs     r0, control
-    orr     r0, #0x2
-    msr     control, r0
-    ldr     sp, =process_stack
-    add     sp, sp, #256
-
-    mov     r0, #0x33333333
-    mov     r1, #0x44444444
-    push    {r0, r1}
+    vmov.f32 s0, #1.00000000
+    vmov.f32 s1, #2.25000000
+    vadd.f32 s0, s0, s1
+    mrs     r0, control
 
     mov     r0,  #0x1000
     mov     r1,  #0x1001
@@ -57,13 +46,6 @@ appmain:
 
     @@@@@@@@
     pop     {r1}
-
-    @@@@@@@@
-    mrs     r0, control
-    and     r0, #~0x2
-    msr     control, r0
-
-    pop    {r0, r1}
 
     bx      lr
 
