@@ -61,6 +61,10 @@ SVC_Handler:
     mov     r3,  #0x2003
     mov     r12, #0x2012
 
+    vmov.f32 s0, #1.00000000
+    vmov.f32 s1, #2.25000000
+    vadd.f32 s0, s0, s1
+
     push    {r0}
     pop     {r0}
 
