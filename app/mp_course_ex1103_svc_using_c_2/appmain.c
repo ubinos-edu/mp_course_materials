@@ -73,11 +73,14 @@ void SVC_Handler_main(unsigned int * svc_args)
 
     switch(svc_number)
     {
-    case 0: svc_args[0] = svc_args[0] + svc_args[1];
+    case 0:
+        svc_args[0] = svc_args[0] + svc_args[1];
         break;
-    case 1: svc_args[0] = svc_args[0] - svc_args[1];
+    case 1:
+        svc_args[0] = svc_args[0] - svc_args[1];
         break;
-    case 2: svc_args[0] = svc_args[0] + 1;
+    case 2:
+        svc_args[0] = svc_args[0] + 1;
         break;
     default: // Unknown SVC request
         break;

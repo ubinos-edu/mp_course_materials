@@ -19,10 +19,13 @@ void task2(void);
 void task3(void);
 
 // Event to tasks
-volatile uint32_t systick_count=0;
+uint32_t systick_count = 0;
 
 // Stack for each task (8Kbytes each - 1024 x 8 bytes)
-long long task0_stack[1024], task1_stack[1024], task2_stack[1024], task3_stack[1024];
+uint32_t task0_stack[1024] __attribute__ ((aligned (8)));
+uint32_t task1_stack[1024] __attribute__ ((aligned (8)));
+uint32_t task2_stack[1024] __attribute__ ((aligned (8)));
+uint32_t task3_stack[1024] __attribute__ ((aligned (8)));
 
 // Data use by OS
 uint32_t curr_task=0; // Current task
