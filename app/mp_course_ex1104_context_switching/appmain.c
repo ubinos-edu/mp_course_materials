@@ -35,38 +35,36 @@ uint32_t PSP_array[4]; // Process Stack Pointer for each task
 // -------------------------------------------------------------
 // Start of main program
 int appmain(int argc, char * argv[]){
-    SCB->CCR |= SCB_CCR_STKALIGN_Msk;   // Enable double word stack alignment
-                                        //(recommended in Cortex-M3 r1p1, default in Cortex-M3 r2px and Cortex-M4)
+    // Enable double word stack alignment
+    //     (recommended in Cortex-M3 r1p1, default in Cortex-M3 r2px and Cortex-M4)
+    SCB->CCR |= SCB_CCR_STKALIGN_Msk;
     
     // Starting the task scheduler
 
     // Create stack frame for task0
     PSP_array[0] = ((unsigned int) task0_stack) + (sizeof task0_stack) - 16*4;
-    HW32_REG((PSP_array[0] + (14*4))) = (unsigned long) task0;
-    // initial Program Counter
+    HW32_REG((PSP_array[0] + (14*4))) = (unsigned long) task0; // initial Program Counter
     HW32_REG((PSP_array[0] + (15*4))) = 0x01000000; // initial xPSR
     
     // Create stack frame for task1
     PSP_array[1] = ((unsigned int) task1_stack) + (sizeof task1_stack) - 16*4;
-    HW32_REG((PSP_array[1] + (14*4))) = (unsigned long) task1;
-    // initial Program Counter
+    HW32_REG((PSP_array[1] + (14*4))) = (unsigned long) task1; // initial Program Counter
     HW32_REG((PSP_array[1] + (15*4))) = 0x01000000; // initial xPSR
     
     // Create stack frame for task2
     PSP_array[2] = ((unsigned int) task2_stack) + (sizeof task2_stack) - 16*4;
-    HW32_REG((PSP_array[2] + (14*4))) = (unsigned long) task2;
-    // initial Program Counter
+    HW32_REG((PSP_array[2] + (14*4))) = (unsigned long) task2; // initial Program Counter
     HW32_REG((PSP_array[2] + (15*4))) = 0x01000000; // initial xPSR
 
     // Create stack frame for task3
     PSP_array[3] = ((unsigned int) task3_stack) + (sizeof task3_stack) - 16*4;
-    HW32_REG((PSP_array[3] + (14*4))) = (unsigned long) task3;
-    // initial Program Counter
+    HW32_REG((PSP_array[3] + (14*4))) = (unsigned long) task3; // initial Program Counter
     HW32_REG((PSP_array[3] + (15*4))) = 0x01000000; // initial xPSR
 
     curr_task = 0; // Switch to task #0 (Current task)
     
     __set_PSP((PSP_array[curr_task] + 16*4)); // Set PSP to top of task 0 stack
+
     NVIC_SetPriority(PendSV_IRQn, 0xFF); // Set PendSV to lowest possible priority
 
     unsigned int freqk;
@@ -74,7 +72,6 @@ int appmain(int argc, char * argv[]){
     SysTick_Config(freqk); // 1000 Hz SysTick interrupt
     
     __set_CONTROL(0x3); // Switch to use Process Stack, unprivileged state
-    
     __ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
     
     task0(); // Start task 0
