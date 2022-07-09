@@ -95,7 +95,7 @@ void __attribute__((naked)) SVC_Handler(void)
         "tst    lr, #4                  \n\t" // Test bit 2 of EXC_RETURN
         "ite    eq                      \n\t"
         "mrseq  r0, msp                 \n\t" // if 0, stacking used msp, copy to r0
-        "mrsne  r0, psp                 \n\t" //  if 1, stacking used psp, copy to r0
+        "mrsne  r0, psp                 \n\t" // if 1, stacking used psp, copy to r0
         "b      SVC_Handler_main        \n\t"
     );
 }
