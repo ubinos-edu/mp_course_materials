@@ -55,6 +55,34 @@ format_char:
 format_float:
     .asciz  "%f\n"
 
+endian_test:
+    .align 2
+    .word   0x12345678
+    .align 1
+    .hword  0x1234
+    .hword  0x5678
+    .align 0
+    .byte   0x12
+    .byte   0x34
+    .byte   0x56
+    .byte   0x78
+
+align_test:
+    .align 2
+    .word   0x12345678
+    .align 2
+    .hword  0x1234
+    .align 2
+    .hword  0x5678
+    .align 2
+    .byte   0x12
+    .align 2
+    .byte   0x34
+    .align 2
+    .byte   0x56
+    .align 2
+    .byte   0x78
+
     .text
     .thumb
 
