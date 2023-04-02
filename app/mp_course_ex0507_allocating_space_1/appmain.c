@@ -7,6 +7,7 @@
 #include <ubinos_config.h>
 
 #include <stdio.h>
+#include <stdint.h>
 
 static int int_data = 0;
 static int int_data2 = 1;
@@ -21,6 +22,10 @@ static char format_string[] = "%s\n";
 static char format_char[] = "%c\n";
 static char format_float[] = "%f\n";
 
+static uint32_t endian_test_word[] = {0x12345678};
+static uint16_t endian_test_hword[] = {0x1234, 0x5678};
+static uint8_t  endian_test_byte[] = {0x12, 0x34, 0x56, 0x78};
+
 int appmain(int argc, char * argv[])
 {
     printf(format_int, int_data);
@@ -30,6 +35,14 @@ int appmain(int argc, char * argv[])
     printf(format_int, int_array[2]);
     printf(format_float, float_data);
     printf(format_float, double_data);
+
+    printf(format_int, endian_test_word[0]);
+    printf(format_int, endian_test_hword[0]);
+    printf(format_int, endian_test_byte[0]);
+
+    printf(format_int, align_test_word[0]);
+    printf(format_int, align_test_hword[0]);
+    printf(format_int, align_test_byte[0]);
 
     return 0;
 }

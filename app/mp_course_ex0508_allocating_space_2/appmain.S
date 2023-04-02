@@ -58,10 +58,8 @@ format_float:
 endian_test:
     .align 2
     .word   0x12345678
-    .align 1
     .hword  0x1234
     .hword  0x5678
-    .align 0
     .byte   0x12
     .byte   0x34
     .byte   0x56
