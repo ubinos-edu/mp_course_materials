@@ -18,30 +18,20 @@
     .globl  appmain
     .type   appmain, %function
 appmain:
-    @@@@
-    mov     r0, #0
-    mrs     r0, control
-    msr     control, r0
+    @@@@@@@@
+    svc     #0x0
 
-    mrs     r0, control
-    orr     r0, #0x2
-    msr     control, r0
-
-    add     sp, #0x20
-
-    mrs     r0, control
-    and     r0, #0xfffffffd
-    msr     control, r0
-
+      .thumb_func
+    .align 1
+    .globl SVC_Handler
+    .type SVC_Handler, %function
+SVC_Handler:
+  @@@@
     mrs     r0, control
     orr     r0, #0x2
     msr     control, r0
 
-    mov     r0, #0
-    mrs     r0, msp
-
-    mov     r0, #0
-    mrs     r0, psp
+    mrs     r0, control
 
     @@@@
     ldr     r1, =0xe000ed00 @ SCB
