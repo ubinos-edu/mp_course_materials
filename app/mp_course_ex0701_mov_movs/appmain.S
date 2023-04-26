@@ -36,7 +36,7 @@ appmain:
     mov     r1, #-1
     mov     r2, #0
     mov     r3, #1
-    mov     r4, #0
+    movs    r4, #0
     msr     apsr, r0
 
     @ Copy value from Rx to R4 with APSR (flags) update
