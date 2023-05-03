@@ -44,7 +44,7 @@ appmain:
 
     @@@@
     ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
-    
+
     stmia   r7, {r0-r3}         @ Write 4 words stored in r0 - r3 to memory location specified by r7
 
     @@@@@@@@
@@ -59,7 +59,7 @@ appmain:
     ldr     r7, =int_array_2
     stmia   r7, {r0-r3}
     mov     r7, #0
-    
+
     @@@@
     ldr     r7, =int_array      @ Set r7 to int_array (address)
 
@@ -67,7 +67,7 @@ appmain:
 
     @@@@
     ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
-    
+
     stmia   r7!, {r0-r3}        @ Change r7 to int_array_2 (address) + 0x10 after the store
 
     @@@@@@@@
@@ -94,6 +94,56 @@ appmain:
     add     r7, r7, #16
 
     stmdb   r7, {r0-r3}         @ Write 4 words stored in r0 - r3 to memory location specified by r7
+
+    @@@@@@@@
+    @ Multiple Load/Store Decrement Address before (shuffled register order)
+    mov     r0, #0
+    mov     r1, #0
+    mov     r2, #0
+    mov     r3, #0
+    mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    ldr     r7, =int_array_2
+    stmia   r7, {r0-r3}
+    mov     r7, #0
+
+    @@@@
+    ldr     r7, =int_array      @ Set r7 to int_array (address)
+    add     r7, r7, #16
+
+    ldmdb   r7, {r3, r0, r1-r2} @ Read 4 words and store them to r0 - r3
+
+    @@@@
+    ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
+    add     r7, r7, #16
+
+    stmdb   r7, {r1, r0, r2-r3} @ Write 4 words stored in r0 - r3 to memory location specified by r7
+
+    @@@@@@@@
+    @ Multiple Load/Store Decrement Address before (not consecutive register order)
+    mov     r0, #0
+    mov     r1, #0
+    mov     r2, #0
+    mov     r3, #0
+    mov     r4, #0
+    mov     r5, #0
+    mov     r6, #0
+    ldr     r7, =int_array_2
+    stmia   r7, {r0-r3}
+    mov     r7, #0
+
+    @@@@
+    ldr     r7, =int_array      @ Set r7 to int_array (address)
+    add     r7, r7, #16
+
+    ldmdb   r7, {r3, r0-r1}     @
+
+    @@@@
+    ldr     r7, =int_array_2    @ Set r7 to int_array_2 (address)
+    add     r7, r7, #16
+
+    stmdb   r7, {r1, r0, r3}    @
 
     @@@@@@@@
     bx     lr
