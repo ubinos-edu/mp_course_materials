@@ -51,7 +51,7 @@ try1:
     mov     r2, #1          @ load the ‘lock taken’ value (0: free, 1: lock)
 try2:
     ldrex   r0, [r1]        @ load the lock value
-    svc     #15
+    svc     #15             @ <- execute other
     cmp     r0, #0          @ is the lock free?
     itte    eq
     strexeq r0, r2, [r1]    @ try and claim the lock
@@ -69,7 +69,7 @@ try2:
     mov     r2, #1          @ load the ‘lock taken’ value (0: free, 1: lock)
 try3:
     ldrex   r0, [r1]        @ load the lock value
-    clrex                   @ <- accessed by other thread
+    bl      func_a          @ <- execute other
     cmp     r0, #0          @ is the lock free?
     itte    eq
     strexeq r0, r2, [r1]    @ try and claim the lock
@@ -79,6 +79,13 @@ try3:
     @@@@@@@@
     bx      lr
 
+    .thumb_func
+    .align 1
+    .globl func_a
+    .type func_a, %function
+func_a:
+    clrex                   @ <- accessed
+    bx      lr
 
     .thumb_func
     .align 1

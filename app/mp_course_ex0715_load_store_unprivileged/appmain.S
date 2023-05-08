@@ -26,7 +26,7 @@ int_array:
 appmain:
     @@@@@@@@
     ldr     r0, =int_array
-    ldr     r1, =0xe000ed00 @ SCB
+    ldr     r1, =0xe000ed00 @ SCB (chip ID)
     mov     r2, #0
     mov     r3, #0
 

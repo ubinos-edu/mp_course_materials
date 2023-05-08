@@ -134,7 +134,7 @@ appmain:
     @@@@@@@@
     mov     r1, #1
     mov     r2, #2
- 
+
     umlal   r1, r2, r3, r4 @ r2:r1 = r2:r1 + r3 * r4
 
     @@@@@@@@
@@ -144,14 +144,14 @@ appmain:
     mov     r4, #0x10
 
     @@@@
-    smull r1, r2, r3, r4 @ r2:r1 = -2 * 16 = -32
-    umull r1, r2, r3, r4
+    smull r1, r2, r3, r4 @ r2:r1 = r3 * r4 = -2 * 16 = -32
+    umull r1, r2, r3, r4 @ r2:r1 = r3 * r4 = 0xfffffffe * 16 = 0x 0000000F FFFFFFE0
 
     @@@@@@@@
     mov     r1, #0xfffffffe @ r2:r1 = -2
     mov     r2, #0xffffffff
- 
-    smlal   r1, r2, r3, r4 @  r2:r1 = r2:r1 + -2 * 16 = -34
+
+    smlal   r1, r2, r3, r4 @  r2:r1 = r2:r1 + (r3 * r4) = -2 + (-2 * 16) = -34
 
     @@@@@@@@
     bx      lr
