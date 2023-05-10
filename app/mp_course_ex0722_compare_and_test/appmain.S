@@ -32,9 +32,9 @@ appmain:
     msr     apsr_nzcvq, r0
     cmp     r1, r2              @ 1 - 2
     msr     apsr_nzcvq, r0
-    cmp     r2, r3              @ 2 - 1
+    cmp     r2, r3              @ 2 - 1     0x00000002 + 0xffffffff = 0x1 00000001
     msr     apsr_nzcvq, r0
-    cmp     r1, r3              @ 1 - 1
+    cmp     r1, r3              @ 1 - 1     0x00000001 + 0xffffffff = 0x1 00000000
 
     @@@@@@@@
     @ CMP <Rn>, #<immed> Compare: Calculate Rn – immediate data.
@@ -44,16 +44,16 @@ appmain:
     cmp     r2, #1              @ 2 - 1
     msr     apsr_nzcvq, r0
     cmp     r1, #1              @ 1 - 1
-  
+
 
     @@@@@@@@
     @ CMN <Rn>, <Rm> Compare negative: Calculate Rn + Rm.
     msr     apsr_nzcvq, r0
-    cmn     r1, r4              @ 1 + -2
+    cmn     r1, r4              @ 1 + -2    0x00000001 + 0xfffffffe = 0x  ffffffff
     msr     apsr_nzcvq, r0
-    cmn     r2, r5              @ 2 + -1
+    cmn     r2, r5              @ 2 + -1    0x00000002 + 0xffffffff = 0x1 00000001
     msr     apsr_nzcvq, r0
-    cmn     r1, r5              @ 1 + -1
+    cmn     r1, r5              @ 1 + -1    0x00000001 + 0xffffffff = 0x1 00000000
 
     @@@@@@@@
     @ CMN <Rn>, #<immed> Compare negative: Calculate Rn + immediate data.
