@@ -88,17 +88,25 @@ appmain:
     mov     r0, #0
     mov     r1, #6
     mov     r2, #2
-    mov     r3, #-2
-    mov     r4, #0
+    mov     r3, #-2 @ 0x ffff fffe
+    mov     r4, #2147483648 @ 0x 8000 0000
+    mov     r5, #0
 
     @@@@
-    mul     r0, r1, r2
+    mul     r0, r1, r2              @ 0x 0000 0006 * 0x 0000 0002 (          2) = 0x 0000 0000 0000 000c ( 12)          = 0x 0000 000c ( 12)
+
+    mul     r0, r1, r3              @ 0x 0000 0006 * 0x ffff fffe (         -2) = 0x ffff ffff ffff fff4 (-12)          = 0x ffff fff4 (-12)
+                                    @ 0x 0000 0006 * 0x ffff fffe ( 4294967294) = 0x 0000 0005 ffff fff4 (25769803764)  = 0x ffff fff4 (4294967284) (Invalid)
+
+    mul     r0, r1, r4              @ 0x 0000 0006 * 0x 8000 0000 (-2147483648) = 0x ffff fffd 0000 0000 (-12884901888) = 0x 0000 0000 (0) (Invalid)
+                                    @ 0x 0000 0006 * 0x 8000 0000 ( 2147483648) = 0x 0000 0003 0000 0000 ( 12884901888) = 0x 0000 0000 (0) (Invalid)
+
     udiv    r0, r1, r2
     udiv    r0, r1, r3
     sdiv    r0, r1, r3
 
     @@@@
-    udiv    r0, r1, r4
+    udiv    r0, r1, r5
 
     ldr     r7, =0xe000ed14 @ SCB->CCR
     ldr     r6, [r7]
@@ -110,7 +118,7 @@ appmain:
     orr     r6, 0x40000 @ USGFAULTENA bit[18]
     str     r6, [r7]
 
-    udiv    r0, r1, r4
+    udiv    r0, r1, r5
 
     @@@@@@@@
     mov     r0, #0
@@ -138,14 +146,18 @@ appmain:
     umlal   r1, r2, r3, r4 @ r2:r1 = r2:r1 + r3 * r4
 
     @@@@@@@@
-    mov     r1, #0xfffffffe @ r2:r1 = -2
-    mov     r2, #0xffffffff
-    mov     r3, #-2
-    mov     r4, #0x10
+    mov     r0, #0x0 @ r1:r2 = 0x 0000 0000 0000 0000
+    mov     r1, #0x0
+    mov     r2, #6
+    mov     r3, #2
+    mov     r4, #-2 @ 0x ffff fffe
 
     @@@@
-    smull r1, r2, r3, r4 @ r2:r1 = r3 * r4 = -2 * 16 = -32
-    umull r1, r2, r3, r4 @ r2:r1 = r3 * r4 = 0xfffffffe * 16 = 0x 0000000F FFFFFFE0
+    smull r0, r1, r2, r3 @ r1:r0 = r2 * r3 = 0x 0000 0006 * 0x 0000 0002 (         2) = 0x 0000 0000 0000 000c (         12)
+    smull r0, r1, r2, r4 @ r1:r0 = r2 * r3 = 0x 0000 0006 * 0x ffff fffe (        -2) = 0x ffff ffff ffff fff4 (        -12)
+
+    umull r0, r1, r2, r3 @ r1:r0 = r2 * r3 = 0x 0000 0006 * 0x 0000 0002 (         2) = 0x 0000 0000 0000 000c (         12)
+    umull r0, r1, r2, r4 @ r1:r0 = r2 * r3 = 0x 0000 0006 * 0x ffff fffe (4294967294) = 0x 0000 0005 ffff fff4 (25769803764)
 
     @@@@@@@@
     mov     r1, #0xfffffffe @ r2:r1 = -2
