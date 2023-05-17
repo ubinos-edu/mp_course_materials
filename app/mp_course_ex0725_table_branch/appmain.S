@@ -12,7 +12,7 @@
 
     .text
     .thumb
-    
+
 
     .thumb_func
     .align  1
@@ -20,7 +20,8 @@
     .type   appmain, %function
 appmain:
     @@@@@@@@
-    mov     r0, #0
+    movs    r0, #0
+    @ mov    r0, #0
 
 tbb_start:
     tbb     [pc, r0]        @ 32-bit (pc + 4)

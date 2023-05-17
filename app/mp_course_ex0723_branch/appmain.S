@@ -12,7 +12,7 @@
 
     .text
     .thumb
-    
+
 
     .thumb_func
     .align  1
@@ -34,9 +34,19 @@ label1:
     b.w     label2
     mov     r4, #4
 label2:
+    mov     r1, #1
+    ldr     r6, =label3
+    bx      r6
+    mov     r2, #2
+    .thumb_func
+    .align  1
+label3:
+    mov     r3, #3
 
     @@@@@@@@
     bl      func_a
+    ldr     r6, =func_b
+    blx     r6
 
     @@@@@@@@
     mov     r0, #0
@@ -46,13 +56,13 @@ label2:
     mov     r4, #0
 
     cmp     r1, r2
-    beq     label3
+    beq     label4
     mov     r3, #3
-label3:
-    cmp     r1, r2
-    bne     label4
-    mov     r4, #4
 label4:
+    cmp     r1, r2
+    bne     label5
+    mov     r4, #4
+label5:
 
 
     @@@@@@@@
