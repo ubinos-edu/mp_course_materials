@@ -11,7 +11,7 @@
 
     .data
 
-    .align 2
+    .align 3
 process_stack:
     .space   256, 0xe
 
@@ -37,7 +37,9 @@ appmain:
 
     mov     r0, #0x33333333
     mov     r1, #0x44444444
-    push    {r0, r1}
+    mov     r2, #0x55555555
+    mov     r3, #0x66666666
+    push    {r0-r3}
 
     mov     r0,  #0x1000
     mov     r1,  #0x1001
