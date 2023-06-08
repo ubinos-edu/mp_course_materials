@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 // Define SVC functions
-int __attribute__((naked)) svc_service_yield(void) 
+int __attribute__((naked)) svc_service_yield(void)
 {
     __asm__ __volatile__ (
         "svc        #0x00               \n\t"
@@ -30,7 +30,7 @@ void task3(void);
 // Event to tasks
 uint32_t systick_count = 0;
 
-// Stack for each task (8Kbytes each - 1024 x 8 bytes)
+// Stack for each task (8Kbytes each - 1024 x 4 bytes)
 uint32_t task0_stack[1024] __attribute__ ((aligned (8)));
 uint32_t task1_stack[1024] __attribute__ ((aligned (8)));
 uint32_t task2_stack[1024] __attribute__ ((aligned (8)));
@@ -47,19 +47,19 @@ int appmain(int argc, char * argv[]) {
     // Enable double word stack alignment
     //     (recommended in Cortex-M3 r1p1, default in Cortex-M3 r2px and Cortex-M4)
     SCB->CCR |= SCB_CCR_STKALIGN_Msk;
-    
+
     // Starting the task scheduler
 
     // Create stack frame for task0
     PSP_array[0] = ((unsigned int) task0_stack) + (sizeof task0_stack) - 16*4;
     HW32_REG((PSP_array[0] + (14*4))) = (unsigned long) task0; // initial Program Counter
     HW32_REG((PSP_array[0] + (15*4))) = 0x01000000; // initial xPSR
-    
+
     // Create stack frame for task1
     PSP_array[1] = ((unsigned int) task1_stack) + (sizeof task1_stack) - 16*4;
     HW32_REG((PSP_array[1] + (14*4))) = (unsigned long) task1; // initial Program Counter
     HW32_REG((PSP_array[1] + (15*4))) = 0x01000000; // initial xPSR
-    
+
     // Create stack frame for task2
     PSP_array[2] = ((unsigned int) task2_stack) + (sizeof task2_stack) - 16*4;
     HW32_REG((PSP_array[2] + (14*4))) = (unsigned long) task2; // initial Program Counter
@@ -71,7 +71,7 @@ int appmain(int argc, char * argv[]) {
     HW32_REG((PSP_array[3] + (15*4))) = 0x01000000; // initial xPSR
 
     curr_task = 0; // Switch to task #0 (Current task)
-    
+
     __set_PSP((PSP_array[curr_task] + 16*4)); // Set PSP to top of task 0 stack
 
     NVIC_SetPriority(PendSV_IRQn, 0xFF); // Set PendSV to lowest possible priority
@@ -79,12 +79,12 @@ int appmain(int argc, char * argv[]) {
     unsigned int freqk;
     bsp_getcpuclockfreqk(&freqk);
     SysTick_Config(freqk); // 1000 Hz SysTick interrupt
-    
-    __set_CONTROL(0x3); // Switch to use Process Stack, unprivileged state    
+
+    __set_CONTROL(0x3); // Switch to use Process Stack, unprivileged state
     __ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
 
     task0(); // Start task 0
-    
+
     while(1) {
         bsp_abortsystem(); // Should not be here
     };

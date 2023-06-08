@@ -11,7 +11,7 @@
 #include <stdlib.h>
 
 // Define SVC functions
-int __attribute__((naked)) svc_service_yield(void) 
+int __attribute__((naked)) svc_service_yield(void)
 {
     __asm__ __volatile__ (
         "svc        #0x00               \n\t"
@@ -19,7 +19,7 @@ int __attribute__((naked)) svc_service_yield(void)
     );
 }
 
-int __attribute__((naked)) svc_service_os_start(void) 
+int __attribute__((naked)) svc_service_os_start(void)
 {
     __asm__ __volatile__ (
         "svc        #0x01               \n\t"
@@ -38,7 +38,7 @@ void task3(void);
 // Event to tasks
 uint32_t systick_count = 0;
 
-// Stack for each task (8Kbytes each - 1024 x 8 bytes)
+// Stack for each task (8Kbytes each - 1024 x 4 bytes)
 uint32_t task0_stack[1024] __attribute__ ((aligned (8)));
 uint32_t task1_stack[1024] __attribute__ ((aligned (8)));
 uint32_t task2_stack[1024] __attribute__ ((aligned (8)));
@@ -56,10 +56,10 @@ int appmain(int argc, char * argv[]) {
     // Enable double word stack alignment
     //     (recommended in Cortex-M3 r1p1, default in Cortex-M3 r2px and Cortex-M4)
     SCB->CCR |= SCB_CCR_STKALIGN_Msk;
-    
+
     // Starting the task scheduler
     svc_service_os_start();
-    
+
     while(1) {
         bsp_abortsystem(); // Should not be here
     };
@@ -151,7 +151,7 @@ void os_start(void)
     HW32_REG((PSP_array[2] + (17*4))) = 0x01000000; // initial xPSR
     HW32_REG((PSP_array[2] + ( 1*4))) = 0x3; // initial CONTROL : unprivileged, PSP, no FP
     HW32_REG((PSP_array[2] )) = 0xFFFFFFFDUL; // initial EXC_RETURN
-    
+
     // Create stack frame for task3
     PSP_array[3] = ((unsigned int) task3_stack) + (sizeof task3_stack) - 18*4;
     HW32_REG((PSP_array[3] + (16*4))) = (unsigned long) task3; // initial Program Counter
@@ -170,7 +170,7 @@ void os_start(void)
     bsp_getcpuclockfreqk(&freqk);
     SysTick_Config(freqk); // 1000 Hz SysTick interrupt
 
-    __set_CONTROL(0x1); // Switch to use unprivileged state    
+    __set_CONTROL(0x1); // Switch to use unprivileged state
     __ISB(); // Execute ISB after changing CONTROL (architectural recommendation)
 }
 
