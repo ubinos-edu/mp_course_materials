@@ -93,30 +93,38 @@ int appmain(int argc, char * argv[]) {
 // ------------------------------------------------------------
 void task0(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("0\n");
+        bsp_busywaitms(100);
     };
 }
 // ------------------------------------------------------------
 void task1(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("1\n");
+        bsp_busywaitms(100);
     };
 }
 // ------------------------------------------------------------
 void task2(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("2\n");
+        bsp_busywaitms(100);
     };
 }
 
 // ------------------------------------------------------------
 void task3(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("3\n");
+        bsp_busywaitms(100);
         svc_service_yield();
     };
 }
@@ -152,6 +160,9 @@ void reschedule(void)
 // ------------------------------------------------------------
 void SysTick_Handler(void) // 1KHz
 {
+    uint32_t psp = __get_PSP();
+    (void) psp;
+
     // Increment systick counter for LED blinking
     systick_count++;
 
@@ -162,6 +173,9 @@ void SysTick_Handler(void) // 1KHz
 
 void SVC_Handler_main(unsigned int * svc_args)
 {
+    uint32_t psp = __get_PSP();
+    (void) psp;
+
     // Stack frame contains:
     // r0, r1, r2, r3, r12, r14, the return address and xPSR
     // - Stacked R0 = svc_args[0]

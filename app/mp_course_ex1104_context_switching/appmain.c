@@ -87,7 +87,7 @@ void task0(void)
     bsp_busywaitms(250 * 0);
     while (1) {
         printf("0\n");
-        bsp_busywaitms(1000);
+        bsp_busywaitms(100);
     };
 }
 // ------------------------------------------------------------
@@ -96,7 +96,7 @@ void task1(void)
     bsp_busywaitms(250 * 1);
     while (1) {
         printf("1\n");
-        bsp_busywaitms(1000);
+        bsp_busywaitms(100);
     };
 }
 // ------------------------------------------------------------
@@ -105,7 +105,7 @@ void task2(void)
     bsp_busywaitms(250 * 2);
     while (1) {
         printf("2\n");
-        bsp_busywaitms(1000);
+        bsp_busywaitms(100);
     };
 }
 
@@ -115,13 +115,16 @@ void task3(void)
     bsp_busywaitms(250 * 3);
     while (1) {
         printf("3\n");
-        bsp_busywaitms(1000);
+        bsp_busywaitms(100);
     };
 }
 
 // ------------------------------------------------------------
 void SysTick_Handler(void) // 1KHz
 {
+    uint32_t psp = __get_PSP();
+    (void) psp;
+
     // Increment systick counter for LED blinking
     systick_count++;
 

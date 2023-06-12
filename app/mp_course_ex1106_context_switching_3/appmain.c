@@ -68,34 +68,47 @@ int appmain(int argc, char * argv[]) {
 // ------------------------------------------------------------
 void task0(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("0\n");
+        bsp_busywaitms(100);
     };
 }
 // ------------------------------------------------------------
 void task1(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("1\n");
+        bsp_busywaitms(100);
     };
 }
 // ------------------------------------------------------------
 void task2(void)
 {
+    uint32_t control;
+    (void) control;
+
     float f1, f2;
     f1 = 1.0;
     f2 = 0.25;
+    control = __get_CONTROL();
+    f1 += f2;
+    control = __get_CONTROL();
+    bsp_busywaitms(250 * 0);
     while (1) {
-        f1 += f2;
         printf("2\n");
+        bsp_busywaitms(100);
     };
 }
 
 // ------------------------------------------------------------
 void task3(void)
 {
+    bsp_busywaitms(250 * 0);
     while (1) {
         printf("3\n");
+        bsp_busywaitms(100);
         svc_service_yield();
     };
 }
@@ -131,6 +144,9 @@ void reschedule(void)
 // ------------------------------------------------------------
 void os_start(void)
 {
+    uint32_t psp;
+    (void) psp;
+
     // Create stack frame for task0
     PSP_array[0] = ((unsigned int) task0_stack) + (sizeof task0_stack) - 18*4;
     HW32_REG((PSP_array[0] + (16*4))) = (unsigned long) task0; // initial Program Counter
@@ -164,6 +180,8 @@ void os_start(void)
     svc_exc_return = HW32_REG((PSP_array[curr_task]));
     __set_PSP((PSP_array[curr_task] + 10*4)); // Return to thread with PSP
 
+    psp = __get_PSP();
+
     NVIC_SetPriority(PendSV_IRQn, 0xFF); // Set PendSV to lowest possible priority
 
     unsigned int freqk;
@@ -177,6 +195,11 @@ void os_start(void)
 // ------------------------------------------------------------
 void SysTick_Handler(void) // 1KHz
 {
+    uint32_t psp;
+    (void) psp;
+
+    psp = __get_PSP();
+
     // Increment systick counter for LED blinking
     systick_count++;
 
@@ -187,6 +210,11 @@ void SysTick_Handler(void) // 1KHz
 
 void SVC_Handler_main(unsigned int * svc_args)
 {
+    uint32_t psp;
+    (void) psp;
+
+    psp = __get_PSP();
+
     // Stack frame contains:
     // r0, r1, r2, r3, r12, r14, the return address and xPSR
     // - Stacked R0 = svc_args[0]
@@ -211,6 +239,8 @@ void SVC_Handler_main(unsigned int * svc_args)
     default: // Unknown SVC request
         break;
     }
+
+    psp = __get_PSP();
 
     return;
 }
