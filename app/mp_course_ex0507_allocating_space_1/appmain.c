@@ -40,10 +40,6 @@ int appmain(int argc, char * argv[])
     printf(format_int, endian_test_hword[0]);
     printf(format_int, endian_test_byte[0]);
 
-    printf(format_int, align_test_word[0]);
-    printf(format_int, align_test_hword[0]);
-    printf(format_int, align_test_byte[0]);
-
     return 0;
 }
 
