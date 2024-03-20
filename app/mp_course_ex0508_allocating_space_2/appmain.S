@@ -56,7 +56,7 @@ format_float:
     .asciz  "%f\n"
 
 endian_test:
-    .align 2
+    .align 4
     .word   0x12345678
     .hword  0x1234
     .hword  0x5678
@@ -64,9 +64,10 @@ endian_test:
     .byte   0x34
     .byte   0x56
     .byte   0x78
+    .word   0xf0f0f0f0
 
-align_test:
-    .align 2
+align_test_1:
+    .align 4
     .word   0x12345678
     .align 2
     .hword  0x1234
@@ -80,6 +81,44 @@ align_test:
     .byte   0x56
     .align 2
     .byte   0x78
+    .align 2
+    .word   0xf0f0f0f0
+
+align_test_2:
+    .align 4
+    .word   0x12345678
+    .align 2, 0xab
+    .hword  0x1234
+    .align 2, 0xab
+    .hword  0x5678
+    .align 2, 0xab
+    .byte   0x12
+    .align 2, 0xab
+    .byte   0x34
+    .align 2, 0xab
+    .byte   0x56
+    .align 2, 0xab
+    .byte   0x78
+    .align 2, 0xab
+    .word   0xf0f0f0f0
+
+align_test_3:
+    .align 4
+    .word   0x12345678
+    .align 2, , 2
+    .hword  0x1234
+    .align 2, , 2
+    .hword  0x5678
+    .align 2, , 2
+    .byte   0x12
+    .align 2, , 2
+    .byte   0x34
+    .align 2, , 2
+    .byte   0x56
+    .align 2, , 2
+    .byte   0x78
+    .align 2, , 2
+    .word   0xf0f0f0f0
 
     .text
     .thumb
@@ -118,7 +157,7 @@ appmain:
 
     ldr     r3, =float_data
     ldr     r0, [r3, #0]
-    bl      __aeabi_f2d
+    bl      __aeabi_f2d         @ covert 32 bit floating point number to 64 bit
     mov     r2, r1
     mov     r1, r0
     ldr     r0, =format_float
