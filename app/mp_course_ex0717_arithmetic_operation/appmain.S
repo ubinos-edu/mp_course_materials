@@ -37,17 +37,31 @@ appmain:
 
     @@@@@@@@
     mov     r0, #0
-    mov     r2, #0x30000000         @ r2:r1 0x30000000 20000000
-    mov     r1, #0x20000000
-    mov     r4, #0x10000000         @ r4:r3 0x10000000 F0000000
-    mov     r3, #0xf0000000
+    mov     r2, #0x00000000         @ r2:r1   0x 00000000 80000000
+    mov     r1, #0x80000000
+    mov     r4, #0x00000000         @ r4:r3 + 0x 00000000 80000000
+    mov     r3, #0x80000000
     mov     r6, #0
     mov     r5, #0
     msr     apsr_nzcvq, r0
 
     @@@@
-    adds    r5, r1, r3
-    adc     r6, r2, r4              @ r6:r5 0x40000001 10000000
+    adds    r5, r1, r3              @ carry
+    adc     r6, r2, r4              @ r6:r5   0x 00000001 00000000
+
+    @@@@@@@@
+    mov     r0, #0
+    mov     r2, #0x00000000         @ r2:r1   0x 00000000 80000000
+    mov     r1, #0x80000000
+    mov     r4, #0x00000000         @ r4:r3 + 0x 00000000 70000000
+    mov     r3, #0x70000000
+    mov     r6, #0
+    mov     r5, #0
+    msr     apsr_nzcvq, r0
+
+    @@@@
+    adds    r5, r1, r3              @ no carry
+    adc     r6, r2, r4              @ r6:r5   0x 00000000 f0000000
 
     @@@@@@@@
     mov     r0, #0
@@ -72,17 +86,31 @@ appmain:
 
     @@@@@@@@
     mov     r0, #0
-    mov     r2, #0x30000000         @ r2:r1 0x30000000 20000000
-    mov     r1, #0x20000000
-    mov     r4, #0x10000000         @ r4:r3 0x10000000 30000000
-    mov     r3, #0x30000000
+    mov     r2, #0x00000001         @ r2:r1   0x 00000001 00000001
+    mov     r1, #0x00000001
+    mov     r4, #0x00000000         @ r4:r3 - 0x 00000000 00000002 = + 0x ffffffff fffffffe
+    mov     r3, #0x00000002
     mov     r6, #0
     mov     r5, #0
     msr     apsr_nzcvq, r0
 
     @@@@
-    subs    r5, r1, r3
-    sbc     r6, r2, r4              @ r6:r5 0x1fffffff f0000000
+    subs    r5, r1, r3              @ borrow (no carry)
+    sbc     r6, r2, r4              @ r6:r5   0x 00000000 ffffffff
+
+    @@@@@@@@
+    mov     r0, #0
+    mov     r2, #0x00000001         @ r2:r1   0x 00000001 00000001
+    mov     r1, #0x00000001
+    mov     r4, #0x00000000         @ r4:r3 - 0x 00000000 00000001 = + 0x ffffffff ffffffff
+    mov     r3, #0x00000001
+    mov     r6, #0
+    mov     r5, #0
+    msr     apsr_nzcvq, r0
+
+    @@@@
+    subs    r5, r1, r3              @ not borrow (carry)
+    sbc     r6, r2, r4              @ r6:r5   0x 00000001 00000000
 
     @@@@@@@@
     mov     r0, #0
