@@ -76,7 +76,7 @@ appmain:
     subs    r0, r2, r1  @ 1 (0x   0000 0001) + -2 (0x ffff fffe) = -1 (0x   ffff ffff) (N=1, Z=0, C=0, V=0) (borrow (unsigned underflow))
                         @   (0x 1 0000 0001) -    (0x 0000 0002) =    (0x   ffff ffff) 
 
-    @     As the result of an inline barrel shifter operation in a move or logical instruction.
+    @     As the result of an inline barrel shifter operation in a move or logical instruction (lsl: logical shift left).
     mov     r0, #0
     msr     apsr, r0
     ldr     r3, =int_data2 @ 0x12345678
