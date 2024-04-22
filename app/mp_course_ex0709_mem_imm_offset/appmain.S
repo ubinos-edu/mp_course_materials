@@ -18,10 +18,12 @@ byte_array_2:                   @ VSCode watch expression: ((char[8]) byte_array
     .byte   0, 0, 0, 0,  0,  0,  0,  0
 
     .align 2
-int_array:                      @ VSCode watch expression: ((int[8]) int_array),h
-    .word   0, 1, 2, 3, 4, 5, 6, 7
-int_array_2:                    @ VSCode watch expression: ((int[8]) int_array_2),h
-    .word   0, 0, 0, 0, 0, 0, 0, 0
+    @ VSCode watch expression: ((int[8]) word_array),h
+word_array:
+    @ VSCode watch expression: ((int[8]) word_array_2),h
+    .word   0x03020100, 0x13121110, 0x23222120, 0x33323130, 0x43424140, 0x53525150
+word_array_2:
+    .word          0x0,        0x0,        0x0,        0x0,        0x0,        0x0
 
 
     .text
@@ -60,10 +62,10 @@ appmain:
     ldrsb   r3, [r7, #0x6] 
 
     @@@@
-    ldr     r7, =int_array
+    ldr     r7, =word_array
     ldrd    r4,r5, [r7, #0x4] 
 
-    ldr     r7, =int_array_2
+    ldr     r7, =word_array_2
     strd    r4,r5, [r7, #0x4] 
 
     @@@@@@@@
@@ -76,17 +78,17 @@ appmain:
     mov     r5, #0
     mov     r6, #0
     mov     r7, #0
-    ldr     r7, =int_array_2
+    ldr     r7, =word_array_2
     strd    r4,r5, [r7, #0x4] 
 
     @@@@
-    ldr     r7, =int_array
+    ldr     r7, =word_array
 
     ldr     r0, [r7, #0x4]!     @ After the access to memory[r7 + 0x4], r7 is updated to r7 + 0x4
     ldr     r1, [r7, #0x4]!     @ After the access to memory[r7 + 0x4], r7 is updated to r7 + 0x4
 
     @@@@
-    ldr     r7, =int_array_2
+    ldr     r7, =word_array_2
 
     str     r0, [r7, #0x4]!     @ After the access to memory[r7 + 0x4], r7 is updated to r7 + 0x4
     str     r1, [r7, #0x4]!     @ After the access to memory[r7 + 0x4], r7 is updated to r7 + 0x4
