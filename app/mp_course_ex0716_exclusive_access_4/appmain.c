@@ -11,9 +11,9 @@
 #include <time.h>
 #include <string.h>
 
-#define INSERT_DELAY_BETWEEN_CHECK_FLAG 1
+#define INSERT_DELAY_BETWEEN_CHECK_LOCK_FLAG 1
 
-static volatile int flag = 0;
+static volatile int lock_flag = 0;
 static char * task1_msg = "task1: hello world\n";
 static char * task2_msg = "task2: hi world\n";
 
@@ -65,12 +65,12 @@ static void task1_func(void * arg)
     for (unsigned int i = 0; ; i++)
     {
         bsp_disableintr();
-        if (flag == 0)
+        if (lock_flag == 0)
         {
-#if (INSERT_DELAY_BETWEEN_CHECK_FLAG == 1)
+#if (INSERT_DELAY_BETWEEN_CHECK_LOCK_FLAG == 1)
             bsp_busywaitms(2);
 #endif
-            flag = 1;
+            lock_flag = 1;
             bsp_enableintr();
 
             for (unsigned int j = 0; j < strlen(task1_msg); j++)
@@ -80,7 +80,7 @@ static void task1_func(void * arg)
                 task_sleepms(delayms);
             }
 
-            flag = 0;
+            lock_flag = 0;
         }
         else
         {
@@ -100,12 +100,12 @@ static void task2_func(void * arg)
     for (unsigned int i = 0; ; i++)
     {
         bsp_disableintr();
-        if (flag == 0)
+        if (lock_flag == 0)
         {
-#if (INSERT_DELAY_BETWEEN_CHECK_FLAG == 1)
+#if (INSERT_DELAY_BETWEEN_CHECK_LOCK_FLAG == 1)
             bsp_busywaitms(2);
 #endif
-            flag = 1;
+            lock_flag = 1;
             bsp_enableintr();
             
             for (unsigned int j = 0; j < strlen(task2_msg); j++)
@@ -115,7 +115,7 @@ static void task2_func(void * arg)
                 task_sleepms(delayms);
             }
 
-            flag = 0;
+            lock_flag = 0;
         }
          else
         {

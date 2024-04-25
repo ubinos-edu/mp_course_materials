@@ -12,7 +12,7 @@
     .data
 
     .align 2
-lock_addr_1:
+lock_flag_addr_1:
     .word   0x0
 
 
@@ -26,53 +26,58 @@ lock_addr_1:
 appmain:
     @@@@@@@@
     mov     r0, #0
-    ldr     r1, =lock_addr_1
+    ldr     r1, =lock_flag_addr_1
     str     r0, [r1]
     msr     apsr, r0
 
     @@@@
-    mov     r2, #1          @ load the ‘lock taken’ value (0: free, 1: lock)
+    mov     r2, #1          @ load the ‘lock flag taken’ value (0: free, 1: lock)
 try1:
-    ldrex   r0, [r1]        @ load the lock value
-    cmp     r0, #0          @ is the lock free?
+    ldrex   r0, [r1]        @ load the lock flag value
+    cmp     r0, #0          @ is the lock flag free?
     itte    eq
-    strexeq r0, r2, [r1]    @ try and claim the lock
+    strexeq r0, r2, [r1]    @ try and claim the lock (success -> r0 = 0, fail r0 = 1)
     cmpeq   r0, #0          @ did this succeed?
     bne     try1            @ no, try again
 
     @@@@@@@@
     mov     r0, #0
-    ldr     r1, =lock_addr_1
+    ldr     r1, =lock_flag_addr_1
     str     r0, [r1]
     mov     r3, #0
     msr     apsr, r0
 
     @@@@
-    mov     r2, #1          @ load the ‘lock taken’ value (0: free, 1: lock)
+    mov     r2, #1          @ load the ‘lock flag taken’ value (0: free, 1: lock)
+    mov     r3, #1
 try2:
-    ldrex   r0, [r1]        @ load the lock value
+    cmp     r3, #0
+    beq     done2
+    ldrex   r0, [r1]        @ load the lock flag value
     svc     #15             @ <- execute other
-    cmp     r0, #0          @ is the lock free?
+    mov     r3, #0
+    cmp     r0, #0          @ is the lock flag free?
     itte    eq
-    strexeq r0, r2, [r1]    @ try and claim the lock
+    strexeq r0, r2, [r1]    @ try and claim the lock (success -> r0 = 0, fail r0 = 1)
     cmpeq   r0, #0          @ did this succeed?
     bne     try2            @ no, try again
+done2:
 
     @@@@@@@@
     mov     r0, #0
-    ldr     r1, =lock_addr_1
+    ldr     r1, =lock_flag_addr_1
     str     r0, [r1]
     mov     r3, #0
     msr     apsr, r0
 
     @@@@
-    mov     r2, #1          @ load the ‘lock taken’ value (0: free, 1: lock)
+    mov     r2, #1          @ load the ‘lock flag taken’ value (0: free, 1: lock)
 try3:
-    ldrex   r0, [r1]        @ load the lock value
+    ldrex   r0, [r1]        @ load the lock flag value
     bl      func_a          @ <- execute other
-    cmp     r0, #0          @ is the lock free?
+    cmp     r0, #0          @ is the lock flag free?
     itte    eq
-    strexeq r0, r2, [r1]    @ try and claim the lock
+    strexeq r0, r2, [r1]    @ try and claim the lock (success -> r0 = 0, fail r0 = 1)
     cmpeq   r0, #0          @ did this succeed?
     bne     try3            @ no, try again
 
