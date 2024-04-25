@@ -30,7 +30,7 @@ appmain:
     mov     r8, #8
 
     @@@@
-    push    {r1, r4-r7}
+    push    {r1, r4-r7}     @ Decrese Before (Pre-indexing, High -> Low), Write Back 
     push    {r8}
 
     @@@@@@@@
@@ -45,7 +45,7 @@ appmain:
     mov     r8, #0
 
     @@@@
-    pop     {r8}
+    pop     {r8}            @ Increase After (Post-indexing, Low -> High), Write Back
     pop     {r0, r1}
     pop     {r2-r4}
 
