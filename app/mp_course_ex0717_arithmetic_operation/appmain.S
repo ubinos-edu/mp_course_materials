@@ -22,18 +22,28 @@ appmain:
     mov     r0, #0
     mov     r1, #3
     mov     r2, #1
+    mov     r3, #0x81000000
+    mov     r9, #1
 
     @@@@
-    add     r0, r1, r2
-    add     r0, r1, #2
-    add     r0, r1, #0x876
+    msr     apsr_nzcvq, r3
+    adds    r0, r1, r2              @ 16 bit instruction
+    msr     apsr_nzcvq, r3
+    add     r0, r1, r2              @ 32 bit instruction
+    msr     apsr_nzcvq, r3
+    adds    r0, r1, r9              @ 32 bit instruction
+    msr     apsr_nzcvq, r3
+    add     r0, r1, r9              @ 32 bit instruction
 
     @@@@
-    adds    r0, r1, r2
-    adds    r0, r1, #2
-    add     r0, r1, #0x876
-    @ adds    r0, r1, #0x976
-    addw    r0, r1, #0x976
+    adds    r0, r1, r2              @ 16 bit instruction
+    adds.w  r0, r1, r2              @ 32 bit instruction
+
+    @@@@
+    add     r0, r1, #0x0002         @ 32 bit instruction adds.w
+    add     r0, r1, #0x0876         @ 32 bit instruction addw
+    @ adds    r0, r1, #0x0876         @ 32 bit instruction addw
+    add     r0, r1, #0x1000         @ 32 bit instruction adds.w
 
     @@@@@@@@
     mov     r0, #0
@@ -67,22 +77,33 @@ appmain:
     mov     r0, #0
     mov     r1, #3
     mov     r2, #1
+    mov     r3, #0x81000000
+    mov     r9, #1
 
     @@@@
-    sub     r0, r1, r2
-    sub     r0, r1, #2
-    sub     r0, r1, #0x876
+    msr     apsr_nzcvq, r3
+    subs    r0, r1, r2              @ 16 bit instruction
+    msr     apsr_nzcvq, r3
+    sub     r0, r1, r2              @ 32 bit instruction
+    msr     apsr_nzcvq, r3
+    subs    r0, r1, r9              @ 32 bit instruction
+    msr     apsr_nzcvq, r3
+    sub     r0, r1, r9              @ 32 bit instruction
 
     @@@@
-    rsb     r0, r2, r1
+    subs    r0, r1, r2              @ 16 bit instruction
+    subs.w  r0, r1, r2              @ 32 bit instruction
+
+    @@@@
+    sub     r0, r1, #2              @ 32 bit instruction subs.w
+    sub     r0, r1, #0x876          @ 32 bit instruction subw
+    sub     r0, r1, #0x1000         @ 32 bit instruction subs.w
+
+    @@@@
+    sub     r0, r2, #2
     rsb     r0, r2, #2
-
-    @@@@
-    subs    r0, r1, r2
-    subs    r0, r1, #2
-    sub     r0, r1, #0x876
-    @ subs    r0, r1, #0x976
-    subw    r0, r1, #0x976
+    sub     r0, r2, r1
+    rsb     r0, r2, r1
 
     @@@@@@@@
     mov     r0, #0
@@ -121,13 +142,13 @@ appmain:
     mov     r5, #0
 
     @@@@
-    mul     r0, r1, r2              @ 0x 0000 0006 * 0x 0000 0002 (          2) = 0x 0000 0000 0000 000c ( 12)          = 0x 0000 000c ( 12)
+    mul     r0, r1, r2              @              0x 0000 0006 * 0x 0000 0002 (          2): 6 *           2 =           12 (0x 0000 0000 0000 000c) ==         12 (0x 0000 000c) (Valid  )
 
-    mul     r0, r1, r3              @ 0x 0000 0006 * 0x ffff fffe (         -2) = 0x ffff ffff ffff fff4 (-12)          = 0x ffff fff4 (-12)
-                                    @ 0x 0000 0006 * 0x ffff fffe ( 4294967294) = 0x 0000 0005 ffff fff4 (25769803764)  = 0x ffff fff4 (4294967284) (Invalid)
+    mul     r0, r1, r3              @ if signed  : 0x 0000 0006 * 0x ffff fffe (         -2): 6 *          -2 =          -12 (0x ffff ffff ffff fff4) ==        -12 (0x ffff fff4) (Valid  )
+                                    @ if unsigned: 0x 0000 0006 * 0x ffff fffe ( 4294967294): 6 *  4294967294 =  25769803764 (0x 0000 0005 ffff fff4) != 4294967284 (0x ffff fff4) (Invalid)
 
-    mul     r0, r1, r4              @ 0x 0000 0006 * 0x 8000 0000 (-2147483648) = 0x ffff fffd 0000 0000 (-12884901888) = 0x 0000 0000 (0) (Invalid)
-                                    @ 0x 0000 0006 * 0x 8000 0000 ( 2147483648) = 0x 0000 0003 0000 0000 ( 12884901888) = 0x 0000 0000 (0) (Invalid)
+    mul     r0, r1, r4              @ if signed  : 0x 0000 0006 * 0x 8000 0000 (-2147483648): 6 * -2147483648 = -12884901888 (0x ffff fffd 0000 0000) !=          0 (0x 0000 0000) (Invalid)
+                                    @ if unsigned: 0x 0000 0006 * 0x 8000 0000 ( 2147483648): 6 * 12884901888 =  77309411328 (0x 0000 0012 0000 0000) !=          0 (0x 0000 0000) (Invalid)
 
     udiv    r0, r1, r2
     udiv    r0, r1, r3
