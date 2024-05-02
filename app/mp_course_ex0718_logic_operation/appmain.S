@@ -133,9 +133,9 @@ appmain:
     mov     r3, #0x00000000
     mov     r0, #0
     msr     apsr_nzcvq, r0
-    ands    r0, r1, r2              @ (C = 0)
+    ands    r0, r1, r2              @ (C = 0)   The AND instruction using registers results in C becoming 0 due to the utilization of the Shift_C algorithm.
     ands    r0, r1, r3              @ (C = 0)
-    ands    r0, r1, #0x80000000     @ (C = 1?)
+    ands    r0, r1, #0x80000000     @ (C = 1?)  The AND instruction that directly uses values results in C becoming 1 because of the ThumbExpandImm_C algorithm.
     ands    r0, r1, #0x00000000     @ (C = 1?)
     mov     r0, #0
     msr     apsr_nzcvq, r0

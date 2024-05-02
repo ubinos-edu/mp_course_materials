@@ -141,14 +141,12 @@ appmain:
     mov     r4, #2147483648 @ 0x 8000 0000
     mov     r5, #0
 
-    @@@@
-    mul     r0, r1, r2              @              0x 0000 0006 * 0x 0000 0002 (          2): 6 *           2 =           12 (0x 0000 0000 0000 000c) ==         12 (0x 0000 000c) (Valid  )
+    @@@@    Multiplication of signed int
+    mul     r0, r1, r2              @ 0x 0000 0006 * 0x 0000 0002 (          2): 6 *           2 =           12 (0x 0000 0000 0000 000c) ==         12 (0x 0000 000c) (Valid  )
+    mul     r0, r1, r3              @ 0x 0000 0006 * 0x ffff fffe (         -2): 6 *          -2 =          -12 (0x ffff ffff ffff fff4) ==        -12 (0x ffff fff4) (Valid  )
+    mul     r0, r1, r4              @ 0x 0000 0006 * 0x 8000 0000 (-2147483648): 6 * -2147483648 = -12884901888 (0x ffff fffd 0000 0000) !=          0 (0x 0000 0000) (Invalid)
 
-    mul     r0, r1, r3              @ if signed  : 0x 0000 0006 * 0x ffff fffe (         -2): 6 *          -2 =          -12 (0x ffff ffff ffff fff4) ==        -12 (0x ffff fff4) (Valid  )
-                                    @ if unsigned: 0x 0000 0006 * 0x ffff fffe ( 4294967294): 6 *  4294967294 =  25769803764 (0x 0000 0005 ffff fff4) != 4294967284 (0x ffff fff4) (Invalid)
-
-    mul     r0, r1, r4              @ if signed  : 0x 0000 0006 * 0x 8000 0000 (-2147483648): 6 * -2147483648 = -12884901888 (0x ffff fffd 0000 0000) !=          0 (0x 0000 0000) (Invalid)
-                                    @ if unsigned: 0x 0000 0006 * 0x 8000 0000 ( 2147483648): 6 * 12884901888 =  77309411328 (0x 0000 0012 0000 0000) !=          0 (0x 0000 0000) (Invalid)
+    @@@@    Multiplication of unsigned int type always causes overflow
 
     udiv    r0, r1, r2
     udiv    r0, r1, r3
@@ -157,11 +155,13 @@ appmain:
     @@@@
     udiv    r0, r1, r5
 
+    @@@@    Enable divided by zero trap
     ldr     r7, =0xe000ed14 @ SCB->CCR
     ldr     r6, [r7]
     orr     r6, 0x10 @ DIV_0_TRP bit[4]
     str     r6, [r7]
 
+    @@@@    Enable usage failt
     ldr     r7, =0xe000ed24 @ SCB->SHCSR
     ldr     r6, [r7]
     orr     r6, 0x40000 @ USGFAULTENA bit[18]
