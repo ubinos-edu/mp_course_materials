@@ -30,6 +30,10 @@ appmain:
     @@@@
     lsls    r0, r1, #1 @ r0 = r1 << #1
 
+    mov     r0, #0x0
+    msr     apsr_nzcvq, r4
+    lsl     r0, r1, #1 @ r0 = r1 << #1
+
     @@@@
     mov     r0, #0x0
     msr     apsr_nzcvq, r4

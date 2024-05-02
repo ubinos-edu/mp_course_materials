@@ -23,15 +23,15 @@ appmain:
     mov     r1, #0
 
     @@@@
-    sxtb    r1, r0              @ 0x65              -> + 0x00000065
-    sxth    r1, r0              @ 0x8765 (- 0x789B) -> 0xFFFF8765 (- 0x0000789B)
-    uxtb    r1, r0              @ 0x65              -> + 0x00000065
-    uxth    r1, r0              @ 0x8765            -> + 0x00008765
+    sxtb    r1, r0              @ 0x65                  -> 0x00000065
+    sxth    r1, r0              @ 0x8765 (- 0x0000789B) -> 0xFFFF8765 (- 0x0000789B)
+    uxtb    r1, r0              @ 0x65                  -> 0x00000065
+    uxth    r1, r0              @ 0x8765                -> 0x00008765
 
     @@@@
-    sxtb    r1, r0, ror #8      @ 0x87 (- 0x78)     -> 0xFFFFFF87 (- 0x00000078)
+    sxtb    r1, r0, ror #8      @ 0x87   (- 0x00000078) -> 0xFFFFFF87 (- 0x00000078)
     sxth    r1, r0, ror #16
-    uxtb    r1, r0, ror #8      @ 0x87              -> 0x00000087
+    uxtb    r1, r0, ror #8      @ 0x87                  -> 0x00000087
     uxth    r1, r0, ror #16
 
     @@@@@@@@
