@@ -80,7 +80,7 @@ appmain:
     msr     apsr_nzcvq, r0
     tst     r1, r3              @ 0x81000000 & 0x01000000 = 0x01000000 (C = 0)
     msr     apsr_nzcvq, r0
-    tst     r1, r4              @ 0x81000000 & 0x80000000 = 0x80000000 (C = 0)
+    tst     r1, r4              @ 0x81000000 & 0x80000000 = 0x80000000 (C = 0?)
     msr     apsr_nzcvq, r0
     tst     r1, r4, lsl #1      @ 0x81000000 & (0x80000000 << 1) = 0x00000000 (C = 1)
 
@@ -102,7 +102,7 @@ appmain:
     msr     apsr_nzcvq, r0
     teq     r1, r3              @ 0x81000000 ^ 0x01000000 = 0x80000000 (C = 0)
     msr     apsr_nzcvq, r0
-    teq     r1, r4              @ 0x81000000 ^ 0x80000000 = 0x01000000 (C = 0)
+    teq     r1, r4              @ 0x81000000 ^ 0x80000000 = 0x01000000 (C = 0?)
     msr     apsr_nzcvq, r0
     teq     r1, r4, lsl #1      @ 0x81000000 ^ (0x80000000 << 1) = 0x81000000 (C = 1)
 
