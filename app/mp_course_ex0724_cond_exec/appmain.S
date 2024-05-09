@@ -12,7 +12,7 @@
 
     .text
     .thumb
-    
+
 
     .thumb_func
     .align  1
@@ -35,7 +35,7 @@ appmain:
     @@@@
     cmp     r1, #1
     ite     eq
-    moveq   r2, #2
+    moveq   r2, #3
     movne   r2, #1
 
     @@@@
