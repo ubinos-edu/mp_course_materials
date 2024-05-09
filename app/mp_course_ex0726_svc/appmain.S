@@ -18,7 +18,7 @@
     .type   appmain, %function
 appmain:
     @@@@@@@@
-    svc     #15    
+    svc     #15
 
     @@@@@@@@
     bx      lr
