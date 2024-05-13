@@ -17,13 +17,13 @@
     .globl  appmain
     .type   appmain, %function
 appmain:
-    @@@@@@@@
+    @@@@@@@@ After updating the CONTROL register with MSR instruction
     mrs     r0, CONTROL
     orr     r0, 0x2
     msr     CONTROL, r0
     isb
 
-    @@@@@@@@
+    @@@@@@@@ When disabling an interrupt using NVIC clear enable register
     ldr     r0, =0xe000e100 @ &SCB->NVIC-ISER[0]
     mov     r1, #0x1
     str     r1, [r0]
