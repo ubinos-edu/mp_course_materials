@@ -18,7 +18,11 @@
     .type   memset_simple, %function
 memset_simple:
     /* memset_simple.h 에서 정의된 함수, memset_simple 를 구현하라. */
-    // r0: void * buffer, r1: int value, r2: size_t size
+    // 각 매개변수 전달을 위해 사용되는 레지스터
+    //    void * buffer : r0
+    //    int value     : r1
+    //    size_t size   : r2
+    // 사용 명령: movs, comp, beq, strb, adds, b
 
-    // r0: return value
+    // 리턴값 전달을 위해 사용되는 레지스터: r0
     bx lr
