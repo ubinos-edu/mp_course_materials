@@ -35,14 +35,14 @@ appmain:
     mov     r12, #0x1012
 
     @@@@
-    svc     #15
+    svc     #15             @ SP is double-word aligned
 
     @@@@@@@@
     pop     {r0}
     mov     r0, #0x1000
 
     @@@@
-    svc     #15
+    svc     #15             @ SP is not double-word aligned
 
     @@@@@@@@
     pop     {r1}

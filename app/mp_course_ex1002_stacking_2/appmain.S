@@ -23,6 +23,10 @@ process_stack:
     .globl  appmain
     .type   appmain, %function
 appmain:
+
+    @ MSP: *((unsigned int*)0x00000000) - 0x100
+    @ PSP : &process_stack
+
     @@@@@@@@
     mov     r0, #0x11111111
     mov     r1, #0x22222222
@@ -48,14 +52,14 @@ appmain:
     mov     r12, #0x1012
 
     @@@@
-    svc     #15
+    svc     #15             @ SP is double-word aligned
 
     @@@@@@@@
     pop     {r0}
     mov     r0, #0x1000
 
     @@@@
-    svc     #15
+    svc     #15             @ SP is not double-word aligned
 
     @@@@@@@@
     pop     {r1}

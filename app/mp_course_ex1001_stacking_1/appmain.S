@@ -28,15 +28,20 @@ appmain:
     mov     r3,  #0x1003
     mov     r12, #0x1012
 
+    @ MSP: *((unsigned int*)0x00000000) - 0x100
+    @ SCB: (SCB_Type*)0xe000ed00,h
+    @ STKALIGN: SCB->CCR[9]
+    @ Padding or not: xPSR[9]
+
     @@@@
-    svc     #15
+    svc     #15             @ SP is double-word aligned
 
     @@@@@@@@
     pop     {r0}
     mov     r0, #0x1000
 
     @@@@
-    svc     #15
+    svc     #15             @ SP is not double-word aligned
 
     @@@@@@@@
     pop     {r1}
