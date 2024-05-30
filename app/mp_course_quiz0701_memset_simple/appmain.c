@@ -28,24 +28,61 @@ int appmain(int argc, char * argv[])
 {
     void * result;
 
+    printf("\n");
+
+    printf("    Test 1: ");
     for (uint32_t i = 0; i < BUF_SIZE; i++)
     {
         buf_1[i] = i % 0xff;
         buf_2[i] = i % 0xff;
     }
-
-    memset(test_buf_1, 7, TEST_BUF_SIZE);
-
+    result = memset(test_buf_1, 7, TEST_BUF_SIZE);
     result = memset_simple(test_buf_2, 7, TEST_BUF_SIZE);
-
     if (memcmp(buf_1, buf_2, BUF_SIZE) == 0 && result == test_buf_2)
     {
-        printf("\n\n    success\n\n");
+        printf("success\n");
     }
     else
     {
-        printf("\n\n    fail\n\n");
+        printf("fail\n");
     }
+
+    printf("    Test 2: ");
+    for (uint32_t i = 0; i < BUF_SIZE; i++)
+    {
+        buf_1[i] = i % 0xff;
+        buf_2[i] = i % 0xff;
+    }
+    result = memset(test_buf_1, 5, 3);
+    result = memset_simple(test_buf_2, 5, 3);
+    if (memcmp(buf_1, buf_2, BUF_SIZE) == 0 && result == test_buf_2)
+    {
+        printf("success\n");
+    }
+    else
+    {
+        printf("fail\n");
+    }
+
+    printf("    Test 3: ");
+    for (uint32_t i = 0; i < BUF_SIZE; i++)
+    {
+        buf_1[i] = i % 0xff;
+        buf_2[i] = i % 0xff;
+    }
+    result = memset(test_buf_1, 7, 0);
+    result = memset_simple(test_buf_2, 7, 0);
+    if (memcmp(buf_1, buf_2, BUF_SIZE) == 0 && result == test_buf_2)
+    {
+        printf("success\n");
+    }
+    else
+    {
+        printf("fail\n");
+    }
+
+    printf("\n");
+    fflush(stdout);
 
     return 0;
 }
