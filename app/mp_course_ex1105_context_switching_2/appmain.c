@@ -160,8 +160,10 @@ void reschedule(void)
 // ------------------------------------------------------------
 void SysTick_Handler(void) // 1KHz
 {
-    uint32_t psp = __get_PSP();
+    uint32_t psp;
     (void) psp;
+
+    psp = __get_PSP();
 
     // Increment systick counter for LED blinking
     systick_count++;
@@ -173,8 +175,10 @@ void SysTick_Handler(void) // 1KHz
 
 void SVC_Handler_main(unsigned int * svc_args)
 {
-    uint32_t psp = __get_PSP();
+    uint32_t psp;
     (void) psp;
+
+    psp = __get_PSP();
 
     // Stack frame contains:
     // r0, r1, r2, r3, r12, r14, the return address and xPSR
