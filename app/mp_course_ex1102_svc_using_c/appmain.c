@@ -34,7 +34,7 @@ int appmain(int argc, char * argv[])
 void __attribute__((naked)) SVC_Handler(void)
 {
     __asm__ __volatile__ (
-        "tst    lr, #4                  \n\t" // Test bit 2 of EXC_RETURN
+        "tst    lr, #4                  \n\t" // Test bit (bitwise AND) 2 of EXC_RETURN
         "ite    eq                      \n\t"
         "mrseq  r0, msp                 \n\t" // if 0, stacking used msp, copy to r0
         "mrsne  r0, psp                 \n\t" //  if 1, stacking used psp, copy to r0

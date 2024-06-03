@@ -36,7 +36,7 @@ appmain:
     .globl SVC_Handler
     .type SVC_Handler, %function
 SVC_Handler:
-    tst     lr, #0x4        @ Test bit 2 of EXC_RETURN (return stack)
+    tst     lr, #0x4        @ Test bit (bitwise AND) 2 of EXC_RETURN (return stack)
     ite     eq
     mrseq   r0, msp         @ if 0, stacking used msp, copy to r0
     mrsne   r0, psp         @ if 1, stacking used psp, copy to r0
