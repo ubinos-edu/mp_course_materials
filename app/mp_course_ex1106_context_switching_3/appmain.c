@@ -10,6 +10,61 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+    Enhancement:
+        * Support system call using SVC
+        * Support FPU
+*/
+
+/*
+    Context of task
+        17 xPSR
+        16 PC
+        15 LR
+        14 R12
+        13 R3
+        12 R2
+        11 R1
+        10 R0
+        9  R11
+        8  R10
+        7  R9
+        6  R8
+        5  R7
+        4  R6
+        3  R5
+        2  R4
+        1  control
+        0  exc_return
+
+        or
+
+        25 space
+        24 fpscr
+        23 s15
+        ...
+        19 s1
+        18 s0
+        17 xPSR
+        16 PC
+        15 LR
+        14 R12
+        13 R3
+        12 R2
+        11 R1
+        10 R0
+        9  R11
+        8  R10
+        7  R9
+        6  R8
+        5  R7
+        4  R6
+        3  R5
+        2  R4
+        1  control
+        0  exc_return
+ */
+
 // Define SVC functions
 int __attribute__((naked)) svc_service_yield(void)
 {
@@ -77,7 +132,7 @@ void task0(void)
 // ------------------------------------------------------------
 void task1(void)
 {
-    bsp_busywaitms(250 * 0);
+    bsp_busywaitms(250 * 1);
     while (1) {
         printf("1\n");
         bsp_busywaitms(100);
@@ -95,7 +150,7 @@ void task2(void)
     control = __get_CONTROL();
     f1 += f2;
     control = __get_CONTROL();
-    bsp_busywaitms(250 * 0);
+    bsp_busywaitms(250 * 2);
     while (1) {
         printf("2\n");
         bsp_busywaitms(100);
@@ -105,7 +160,7 @@ void task2(void)
 // ------------------------------------------------------------
 void task3(void)
 {
-    bsp_busywaitms(250 * 0);
+    bsp_busywaitms(250 * 3);
     while (1) {
         printf("3\n");
         bsp_busywaitms(100);

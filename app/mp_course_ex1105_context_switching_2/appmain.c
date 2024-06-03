@@ -10,6 +10,31 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+    Enhancement:
+        * Support yield
+*/
+
+/*
+    Context of task
+        15 xPSR
+        14 PC
+        13 LR
+        12 R12
+        11 R3
+        10 R2
+        9  R1
+        8  R0
+        7  R11
+        6  R10
+        5  R9
+        4  R8
+        3  R7
+        2  R6
+        1  R5
+        0  R4
+ */
+
 // Define SVC functions
 int __attribute__((naked)) svc_service_yield(void)
 {
@@ -102,7 +127,7 @@ void task0(void)
 // ------------------------------------------------------------
 void task1(void)
 {
-    bsp_busywaitms(250 * 0);
+    bsp_busywaitms(250 * 1);
     while (1) {
         printf("1\n");
         bsp_busywaitms(100);
@@ -111,7 +136,7 @@ void task1(void)
 // ------------------------------------------------------------
 void task2(void)
 {
-    bsp_busywaitms(250 * 0);
+    bsp_busywaitms(250 * 2);
     while (1) {
         printf("2\n");
         bsp_busywaitms(100);
@@ -121,7 +146,7 @@ void task2(void)
 // ------------------------------------------------------------
 void task3(void)
 {
-    bsp_busywaitms(250 * 0);
+    bsp_busywaitms(250 * 3);
     while (1) {
         printf("3\n");
         bsp_busywaitms(100);

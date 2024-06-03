@@ -10,6 +10,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/*
+    Context of task
+        15 xPSR
+        14 PC
+        13 LR
+        12 R12
+        11 R3
+        10 R2
+        9  R1
+        8  R0
+        7  R11
+        6  R10
+        5  R9
+        4  R8
+        3  R7
+        2  R6
+        1  R5
+        0  R4
+ */
+
 // /* Macros for word accesses */
 #define HW32_REG(ADDRESS) (*((volatile unsigned long *)(ADDRESS)))
 
@@ -34,7 +54,7 @@ uint32_t PSP_array[4]; // Process Stack Pointer for each task
 
 // -------------------------------------------------------------
 // Start of main program
-int appmain(int argc, char * argv[]){
+int appmain(int argc, char * argv[]) {
     // Enable double word stack alignment
     //     (recommended in Cortex-M3 r1p1, default in Cortex-M3 r2px and Cortex-M4)
     SCB->CCR |= SCB_CCR_STKALIGN_Msk;
@@ -76,7 +96,7 @@ int appmain(int argc, char * argv[]){
 
     task0(); // Start task 0
 
-    while(1){
+    while(1) {
         bsp_abortsystem(); // Should not be here
     };
 }
@@ -148,7 +168,7 @@ void SysTick_Handler(void) // 1KHz
             break;
     }
 
-    if (curr_task!=next_task){ // Context switching needed
+    if (curr_task!=next_task) { // Context switching needed
         SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; // Set PendSV to pending
     }
 
