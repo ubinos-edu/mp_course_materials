@@ -18,7 +18,11 @@
     .type   memcpy_simple, %function
 memcpy_simple:
     /* memcpy_simple.h 에서 정의된 함수, memcpy_simple 를 구현하라. */
-    // r0: void * destination, r1: void * source, r2: size_t size
+    // 각 매개변수 전달을 위해 사용되는 레지스터
+    //    void * destination : r0
+    //    void * source      : r1
+    //    size_t size        : r2
+    // 사용 명령: movs, cmp, beq, strb, adds, b, bx, ldrb, push, pop
     push    {r4}
 
 

@@ -22,7 +22,7 @@ memset_simple:
     //    void * buffer : r0
     //    int value     : r1
     //    size_t size   : r2
-    // 사용 명령: movs, cmp, beq, strb, adds, b
+    // 사용 명령: movs, cmp, beq, strb, adds, b, bx
 
     // 리턴값 전달을 위해 사용되는 레지스터: r0
     bx lr

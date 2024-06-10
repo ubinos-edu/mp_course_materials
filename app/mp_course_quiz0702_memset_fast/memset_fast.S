@@ -18,10 +18,13 @@
     .type   memset_fast, %function
 memset_fast:
     // memset_fast.h 에서 정의된 함수, memset_fast 를 구현하라.
-    // r0: void * buffer, r1: int value, r2: size_t size
+    // 각 매개변수 전달을 위해 사용되는 레지스터
+    //    void * buffer : r0
+    //    int value     : r1
+    //    size_t size   : r2
 
     cbz     r2, 4f              @ 크기가 0이면 label "4"로 분기
-    movs    r3, r0              @ r3에 메모리 주소 복사 
+    movs    r3, r0              @ r3에 메모리 주소 복사
     bfi     r1, r1, #8, #8      @ Insert r1[ 7: 0] to r1[15: 8]
     bfi     r1, r1, #16, #16    @ Insert r1[15: 0] to r1[31:16]
 1:
