@@ -23,43 +23,33 @@
         15 LR
         14 R12
         13 R3
-        12 R2
-        11 R1
+        ...
         10 R0
         9  R11
-        8  R10
-        7  R9
-        6  R8
-        5  R7
-        4  R6
-        3  R5
+        ...
         2  R4
         1  control
         0  exc_return
 
         or
 
-        25 space
-        24 fpscr
-        23 s15
+        51 space
+        50 fpscr
+        49 s15
         ...
-        19 s1
-        18 s0
-        17 xPSR
-        16 PC
-        15 LR
-        14 R12
-        13 R3
-        12 R2
-        11 R1
-        10 R0
+        34 s0
+        33 xPSR
+        32 PC
+        31 LR
+        30 R12
+        29 R3
+        ...
+        26 R0
+        25 s31
+        ...
+        10 s16
         9  R11
-        8  R10
-        7  R9
-        6  R8
-        5  R7
-        4  R6
-        3  R5
+        ...
         2  R4
         1  control
         0  exc_return
