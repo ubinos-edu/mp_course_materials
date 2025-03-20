@@ -89,7 +89,7 @@ align_test_2:
     .word   0x12345678
     .align 2, 0xab
     .hword  0x1234
-    .align 2, 0xab
+    .align 2, 0xcd
     .hword  0x5678
     .align 2, 0xab
     .byte   0x12
