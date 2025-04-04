@@ -55,6 +55,12 @@ appmain:
     subs    r0, r1, r3  @ 2 - 1 = 1 (N=0, Z=0, C=1, V=0)
 
     @@@@
+    @ 32 bit unsinged integer: 0x 0000 0000                                            ~ 0x FFFF FFFF
+    @                                     0                                                4294967295
+    @ 32 bit signed integer  : 0x 8000 0000 ~ 0x FFFF FFFF, 0x 0000 0000, 0x 0000 0001 ~ 0x 7FFF FFFF
+    @                          -2147483648              -1             0             1     2147483647
+
+    @@@@
     @ C Set to 1 when the operation resulted in a carry, cleared to 0 otherwise.
 
     @    If the result of an addition is greater than or equal to 2^32 (0x 1 0000 0000 = 4294967296) (carry (unsigned overflow))
@@ -104,7 +110,6 @@ appmain:
     adds    r0, r1, r2 @ 2147483647 (0x 7fff ffff) + 2 (0x 0000 0002) =  -2147483647 (0x 8000 0001) (N=1, Z=0, C=0, V=1)
 
     @     If subtracting a positive value from a negative value generates a positive value
-
     mov     r0, #0
     msr     apsr, r0
     ldr     r3, =int_data3 @ -2147483648 (0x 8000 0000)

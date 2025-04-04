@@ -77,6 +77,13 @@ appmain:
     ldr     r1, =0xfffe0000 @ -131072
     usat    r0, #16, r1     @ Q = 1, r0 = 0x 0000 0000 (0)
 
+    mov     r0, #0
+    ldr     r1, =0x00000000 @ 0
+    usat    r0, #16, r1     @ Q = 0?, r0 = 0x 0000 0000 (0)
+
+    mov     r0, #0
+    msr     apsr, r0
+
     @@@@
     bx      lr
 
