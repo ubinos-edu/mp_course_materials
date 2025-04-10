@@ -18,6 +18,8 @@
     .type   appmain, %function
 appmain:
     @ VSCode watch expression for stack : (int[8]) (* ((int *) $sp)),h
+    @ Multiple register push: large number register first
+    @ Multiple register pop: small number register first 
 
     movs    r0, #0
  
