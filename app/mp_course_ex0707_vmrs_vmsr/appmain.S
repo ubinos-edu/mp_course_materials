@@ -25,11 +25,19 @@ appmain:
     vmov.f32 s1, #2.25000000
     vcmp.f32 s0, s1
 
+    ite     ge
+    movge   r2, #2
+    movlt   r2, #1
+
     @ Copy value in FPSCR to R0
     vmrs    r0, FPSCR
 
     @ Copy flags from FPSCR to the flags in APSR
     vmrs    APSR_nzcv, FPSCR
+
+    ite     ge
+    movge   r2, #2
+    movlt   r2, #1
 
     @ Copy R3 to FPSCR, a floating point unit system register
     vmsr    FPSCR, r3
