@@ -97,6 +97,7 @@ appmain:
     @@@@
     sub     r0, r1, #2              @ 32 bit instruction subs.w
     sub     r0, r1, #0x876          @ 32 bit instruction subw
+    @ subs     r0, r1, #0x876          @ 32 bit instruction subw
     sub     r0, r1, #0x1000         @ 32 bit instruction subs.w
 
     @@@@
@@ -142,9 +143,11 @@ appmain:
     mov     r5, #0
 
     @@@@    Multiplication of signed int
-    mul     r0, r1, r2              @ 0x 0000 0006 * 0x 0000 0002 (          2): 6 *           2 =           12 (0x 0000 0000 0000 000c) ==         12 (0x 0000 000c) (Valid  )
-    mul     r0, r1, r3              @ 0x 0000 0006 * 0x ffff fffe (         -2): 6 *          -2 =          -12 (0x ffff ffff ffff fff4) ==        -12 (0x ffff fff4) (Valid  )
-    mul     r0, r1, r4              @ 0x 0000 0006 * 0x 8000 0000 (-2147483648): 6 * -2147483648 = -12884901888 (0x ffff fffd 0000 0000) !=          0 (0x 0000 0000) (Invalid)
+    mul     r0, r1, r2              @ 0x 0000 0006 * 0x 0000 0002 (          2) = 0x   0000 000C : 0x 0000 000c ==           12 (0x           0000 000c) (Valid  )
+    mul     r0, r1, r3              @ 0x 0000 0006 * 0x ffff fffe (         -2) = 0x 5 FFFF FFF4 : 0x ffff fff4 ==          -12 (0x           ffff fff4) (Valid  )
+                                    @                             ( 4294967294)                                 !=  25769803764 (0x 0000 0005 ffff fff4) (Invalid)
+    mul     r0, r1, r4              @ 0x 0000 0006 * 0x 8000 0000 (-2147483648) = 0x 3 0000 0000 : 0x 0000 0000 != -12884901888 (0x ffff fffd 0000 0000) (Invalid)
+                                    @                             ( 2147483648)                                 !=  12884901888 (0x 0000 0003 0000 0000) (Invalid)
 
     @@@@    Multiplication of unsigned int type always causes overflow
 

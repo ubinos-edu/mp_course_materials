@@ -122,7 +122,7 @@ appmain:
     vstmdb  r7!, {s0-s3}            @ Write 4 words and store them to s0 - s3
 
     @ @@@@@@@@
-    @ @ Multiple Load/Store Decrement Address before for FPU (not consecutive register order)
+    @ Multiple Load/Store Decrement Address before for FPU (not consecutive register order)
     @ mov     r0, #0
     @ mov     r1, #0
     @ mov     r2, #0

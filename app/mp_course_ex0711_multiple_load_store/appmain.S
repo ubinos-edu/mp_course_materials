@@ -27,7 +27,7 @@ int_array_2:                    @ VSCode watch expression: ((int[8]) int_array_2
     .type   appmain, %function
 appmain:
     @@@@@@@@
-    @ Multiple Load/Store
+    @ Multiple Load/Store: small number register first 
     mov     r0, #0
     mov     r1, #0
     mov     r2, #0
@@ -71,7 +71,7 @@ appmain:
     stmia   r7!, {r0-r3}        @ Change r7 to int_array_2 (address) + 0x10 after the store
 
     @@@@@@@@
-    @ Multiple Load/Store Decrement Address before
+    @ Multiple Load/Store Decrement Address before: large number register first 
     mov     r0, #0
     mov     r1, #0
     mov     r2, #0

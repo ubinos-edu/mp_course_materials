@@ -72,6 +72,8 @@ appmain:
     ldr     r2, [r7], #4
     ldr     r3, [r7], #4
 
+    ldrd    r2,r3, [r7], #4
+
     @@@@
     ldr     r7, =int_array_2
 
@@ -79,6 +81,8 @@ appmain:
     str     r1, [r7], #4
     str     r2, [r7], #4
     str     r3, [r7], #4
+    
+    strd    r2,r3, [r7], #4
 
     @@@@@@@@
     bx      lr

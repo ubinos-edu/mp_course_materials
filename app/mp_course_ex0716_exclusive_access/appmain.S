@@ -36,7 +36,7 @@ try1:
     ldrex   r0, [r1]        @ load the lock flag value
     cmp     r0, #0          @ is the lock flag free?
     itte    eq
-    strexeq r0, r2, [r1]    @ try and claim the lock (success -> r0 = 0, fail r0 = 1)
+    strexeq r0, r2, [r1]    @ try to claim the lock (success -> r0 = 0, fail r0 = 1)
     cmpeq   r0, #0          @ did this succeed?
     bne     try1            @ no, try again
 
@@ -58,7 +58,7 @@ try2:
     mov     r3, #0
     cmp     r0, #0          @ is the lock flag free?
     itte    eq
-    strexeq r0, r2, [r1]    @ try and claim the lock (success -> r0 = 0, fail r0 = 1)
+    strexeq r0, r2, [r1]    @ try to claim the lock (success -> r0 = 0, fail r0 = 1)
     cmpeq   r0, #0          @ did this succeed?
     bne     try2            @ no, try again
 done2:

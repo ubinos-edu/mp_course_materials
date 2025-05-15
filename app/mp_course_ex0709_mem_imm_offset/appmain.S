@@ -64,6 +64,7 @@ appmain:
     @@@@
     ldr     r7, =word_array
     ldrd    r4,r5, [r7, #0x4] 
+    ldrd    r4,r5, [r7, #0x4]!
 
     ldr     r7, =word_array_2
     strd    r4,r5, [r7, #0x4] 
