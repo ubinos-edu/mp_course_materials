@@ -1,2 +1,2 @@
-Microprocessor course examples
+Microprocessor course materials
 ===============================================================================
