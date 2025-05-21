@@ -34,12 +34,18 @@ appmain:
 
     @@@@
     cmp     r1, #1
+    mov     r2, #0
+    mov     r3, #0
+    mov     r4, #0
     ite     eq
-    moveq   r2, #3
+    moveq   r2, #2
     movne   r2, #1
 
     @@@@
     cmp     r0, #1
+    mov     r2, #0
+    mov     r3, #0
+    mov     r4, #0
     itett   eq
     moveq   r2, #2
     movne   r2, #1
@@ -48,6 +54,9 @@ appmain:
 
     @@@@
     cmp     r1, #1
+    mov     r2, #0
+    mov     r3, #0
+    mov     r4, #0
     itett   eq
     moveq   r2, #2
     movne   r2, #1
