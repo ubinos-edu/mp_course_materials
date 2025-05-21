@@ -10,7 +10,7 @@ include("${CMAKE_CURRENT_LIST_DIR}/../../ubinos/config/common.cmake")
 
 ubinos_project_begin()
 
-project(mp_course_examples)
+project(mp_course_materials)
 
 ubinos_project_end()
 

@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: Apache-2.0
 #
 
-if(INCLUDE__MP_COURSE_EXAMPLES)
+if(INCLUDE__MP_COURSE_MATERIALS)
 
     get_filename_component(_tmpdir "${CMAKE_CURRENT_LIST_DIR}" ABSOLUTE)
 
@@ -16,5 +16,5 @@ if(INCLUDE__MP_COURSE_EXAMPLES)
 
     set(PROJECT_SOURCES ${PROJECT_SOURCES} ${_tmpsrc})
 
-endif(INCLUDE__MP_COURSE_EXAMPLES)
+endif(INCLUDE__MP_COURSE_MATERIALS)
 
