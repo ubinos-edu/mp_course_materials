@@ -81,9 +81,10 @@ int appmain(int argc, char * argv[])
     EncodedPriority = NVIC_GetPriority(TIM2_IRQn);
     NVIC_DecodePriority(EncodedPriority, PriorityGroup, &PreemptPriority, &Subpriority);
 
-    SCB->CCR |= SCB_CCR_USERSETMPEND_Msk;
-    __DSB(); // Ensure transfer is completed
-    __ISB(); // Ensure side effect of the write is visible
+    // 비특권 모드(unprivileged mode)에서 소프트웨어 인터럽트를 발생시킬 수 있게 허용
+    // SCB->CCR |= SCB_CCR_USERSETMPEND_Msk;
+    // __DSB(); // Ensure transfer is completed
+    // __ISB(); // Ensure side effect of the write is visible
 
     __enable_irq();
 
@@ -91,6 +92,7 @@ int appmain(int argc, char * argv[])
     {
         bsp_busywaitms(1000);
 
+        // 소프트웨어 인터럽트를 발생시킴
         NVIC->STIR = TIM2_IRQn;
         __DSB(); // Ensure transfer is completed
         __ISB(); // Ensure side effect of the write is visible
