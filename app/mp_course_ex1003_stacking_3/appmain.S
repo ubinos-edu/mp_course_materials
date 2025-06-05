@@ -34,6 +34,14 @@ appmain:
     mov     r3,  #0x1003
     mov     r12, #0x1012
 
+    @ MSP: ( *((uint32_t*)0x00000000) ),h
+    @      (uint32_t[0x30]) ( *(*((uint32_t*)0x00000000) - 0x30*4) ) ,h
+    @      (uint32_t[0x38]) ( *(0x________ - 0x30*4) ) ,h
+    @      $msp,h
+    @      0x20020000 - 0x30*4 = 0x2001ff40
+    @ FPU: (FPU_Type*)(*0xe000ef30),h
+    @      (uint32_t[6])(*0xe000ef30),h
+
     @@@@
     svc     #15             @ SP is double-word aligned
 

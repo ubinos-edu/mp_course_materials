@@ -24,8 +24,16 @@ process_stack:
     .type   appmain, %function
 appmain:
 
-    @ MSP: *((unsigned int*)0x00000000) - 0x100
-    @ PSP : &process_stack
+    @ MSP: ( *((uint32_t*)0x00000000) ),h
+    @      (uint32_t[0x20]) ( *(*((uint32_t*)0x00000000) - 0x20*4) ) ,h
+    @      (uint32_t[0x28]) ( *(0x________ - 0x20*4) ) ,h
+    @      $msp,h
+    @      0x20020000 - 0x20*4 = 0x2001ff80
+    @ PSP: ( (uint32_t)(&process_stack) + 256 ),h
+    @      (uint32_t[0x20]) ( *((uint32_t)( (uint32_t)(&process_stack) + 256 ) - 0x20*4) ) ,h
+    @      (uint32_t[0x28]) ( *(0x________ - 0x20*4) ) ,h
+    @      $psp,h
+    @      0x20000300 - 0x20*4 = 0x20000280
 
     @@@@@@@@
     mov     r0, #0x11111111

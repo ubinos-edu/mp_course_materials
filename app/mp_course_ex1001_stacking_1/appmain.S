@@ -28,10 +28,14 @@ appmain:
     mov     r3,  #0x1003
     mov     r12, #0x1012
 
-    @ MSP: *((unsigned int*)0x00000000) - 0x100
+    @ MSP: ( *((uint32_t*)0x00000000) ),h
+    @      (uint32_t[0x20]) ( *(*((uint32_t*)0x00000000) - 0x20*4) ) ,h
+    @      (uint32_t[0x28]) ( *(0x________ - 0x20*4) ) ,h
+    @      $msp,h
+    @      0x20020000 - 0x20*4 = 0x2001ff80
     @ SCB: (SCB_Type*)0xe000ed00,h
     @ STKALIGN: SCB->CCR[9]
-    @ Padding or not: xPSR[9]
+    @ Padding or not: Stacked xPSR[9]
 
     @@@@
     svc     #15             @ SP is double-word aligned
