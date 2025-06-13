@@ -12,7 +12,6 @@
 
 /*
     Enhancement:
-        * Support system call using SVC
         * Support FPU
 */
 
@@ -28,8 +27,8 @@
         9  R11
         ...
         2  R4
-        1  control
-        0  exc_return
+        1  CONTROL
+        0  EXC_RETURN
 
         or
 
@@ -51,8 +50,8 @@
         9  R11
         ...
         2  R4
-        1  control
-        0  exc_return
+        1  CONTROL
+        0  EXC_RETURN
  */
 
 // Define SVC functions
@@ -197,33 +196,34 @@ void os_start(void)
     HW32_REG((PSP_array[0] + (16*4))) = (unsigned long) task0; // initial Program Counter
     HW32_REG((PSP_array[0] + (17*4))) = 0x01000000; // initial xPSR
     HW32_REG((PSP_array[0] + ( 1*4))) = 0x3;// initial CONTROL : unprivileged, PSP, no FP
-    HW32_REG((PSP_array[0] )) = 0xFFFFFFFDUL; // initial EXC_RETURN
+    HW32_REG((PSP_array[0] )) = 0xFFFFFFFDUL; // initial EXC_RETURN (return to Thread mode with PSP)
 
     // Create stack frame for task1
     PSP_array[1] = ((unsigned int) task1_stack) + (sizeof task1_stack) - 18*4;
     HW32_REG((PSP_array[1] + (16*4))) = (unsigned long) task1; // initial Program Counter
     HW32_REG((PSP_array[1] + (17*4))) = 0x01000000; // initial xPSR
     HW32_REG((PSP_array[1] + ( 1*4))) = 0x3; // initial CONTROL : unprivileged, PSP, no FP
-    HW32_REG((PSP_array[1] )) = 0xFFFFFFFDUL; // initial EXC_RETURN
+    HW32_REG((PSP_array[1] )) = 0xFFFFFFFDUL; // initial EXC_RETURN (return to Thread mode with PSP)
 
     // Create stack frame for task2
     PSP_array[2] = ((unsigned int) task2_stack) + (sizeof task2_stack) - 18*4;
     HW32_REG((PSP_array[2] + (16*4))) = (unsigned long) task2; // initial Program Counter
     HW32_REG((PSP_array[2] + (17*4))) = 0x01000000; // initial xPSR
     HW32_REG((PSP_array[2] + ( 1*4))) = 0x3; // initial CONTROL : unprivileged, PSP, no FP
-    HW32_REG((PSP_array[2] )) = 0xFFFFFFFDUL; // initial EXC_RETURN
+    HW32_REG((PSP_array[2] )) = 0xFFFFFFFDUL; // initial EXC_RETURN (return to Thread mode with PSP)
 
     // Create stack frame for task3
     PSP_array[3] = ((unsigned int) task3_stack) + (sizeof task3_stack) - 18*4;
     HW32_REG((PSP_array[3] + (16*4))) = (unsigned long) task3; // initial Program Counter
     HW32_REG((PSP_array[3] + (17*4))) = 0x01000000; // initial xPSR
     HW32_REG((PSP_array[3] + ( 1*4))) = 0x3; // initial CONTROL : unprivileged, PSP, no FP
-    HW32_REG((PSP_array[3] )) = 0xFFFFFFFDUL; // initial EXC_RETURN
+    HW32_REG((PSP_array[3] )) = 0xFFFFFFFDUL; // initial EXC_RETURN (return to Thread mode with PSP)
 
     curr_task = 0; // Switch to task #0 (Current task)
 
     svc_exc_return = HW32_REG((PSP_array[curr_task]));
-    __set_PSP((PSP_array[curr_task] + 10*4)); // Return to thread with PSP
+
+    __set_PSP((PSP_array[curr_task] + 10*4)); // Set PSP to top of task 0 stack (When the first task is performed, the context (EXC_RETURN - R11) is simply discarded without recovery.)
 
     psp = __get_PSP();
 
