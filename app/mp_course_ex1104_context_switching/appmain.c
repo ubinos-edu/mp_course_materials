@@ -140,14 +140,8 @@ void task3(void)
 }
 
 // ------------------------------------------------------------
-void SysTick_Handler(void) // 1KHz
+void reschedule(void)
 {
-    uint32_t psp = __get_PSP();
-    (void) psp;
-
-    // Increment systick counter for LED blinking
-    systick_count++;
-
     // Simple task round robin scheduler
     switch (curr_task) {
         case (0):
@@ -171,6 +165,20 @@ void SysTick_Handler(void) // 1KHz
     if (curr_task!=next_task) { // Context switching needed
         SCB->ICSR |= SCB_ICSR_PENDSVSET_Msk; // Set PendSV to pending
     }
+}
+
+// ------------------------------------------------------------
+void SysTick_Handler(void) // 1KHz
+{
+    uint32_t psp;
+    (void) psp;
+
+    psp = __get_PSP();
+
+    // Increment systick counter for LED blinking
+    systick_count++;
+
+    reschedule();
 
     return;
 }
