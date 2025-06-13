@@ -83,7 +83,7 @@ int appmain(int argc, char * argv[]) {
 
     curr_task = 0; // Switch to task #0 (Current task)
 
-    __set_PSP((PSP_array[curr_task] + 16*4)); // Set PSP to top of task 0 stack
+    __set_PSP((PSP_array[curr_task] + 16*4)); // Set PSP to top of task 0 stack (When the first task is performed, the context (R4 - xPSR) is simply discarded without recovery.)
 
     NVIC_SetPriority(PendSV_IRQn, 0xFF); // Set PendSV to lowest possible priority
 
